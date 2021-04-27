@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="adopt_a_pet/.mvn/wrapper"/>
+	<classpathentry kind="src" path="adopt_a_pet/src/main/java"/>
+	<classpathentry kind="src" path="adopt_a_pet/src/test/java"/>
+	<classpathentry kind="output" path="adopt_a_pet/target/classes"/>
+</classpath>
