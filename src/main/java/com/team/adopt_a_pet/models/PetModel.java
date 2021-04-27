@@ -38,7 +38,18 @@ public class PetModel {
 //    "breedPrimaryId": 24,
     private Boolean isBreedMixed;
     private String coatLength;
-	
+    private String descriptionText;
+//    private Integer pictureCount;
+    private String pictureThumbnailUrl;
+    private String rescueId;
+    private String sex;
+    private String sizeGroup;
+    private String slug;
+    private String trackerimageUrl;
+         
+//         Relationships: Organization, Breed, Age Group
+//         ,Species(Cats for now), 
+
 	// This will not allow the createdAt column to be updated after creation
     @Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
