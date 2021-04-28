@@ -10,5 +10,5 @@ import com.team.adopt_a_pet.models.AgeGroup;
 @Repository
 public interface AgeGroupRepository extends CrudRepository<AgeGroup, Long> {
 	List<AgeGroup> findAll();
-	List<AgeGroup> findByName(String name);
+	AgeGroup findByName(String name);
 }

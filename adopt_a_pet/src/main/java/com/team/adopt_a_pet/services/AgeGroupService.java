@@ -29,8 +29,8 @@ public class AgeGroupService {
 	}
 	//retrieve a ageGroup by name
 	public AgeGroup getAgeGroupByName(String name) {
-		List<AgeGroup> listAgeGroup = ageGroupRepo.findByName(name);
-		return listAgeGroup.get(0);
+		AgeGroup listAgeGroup = ageGroupRepo.findByName(name);
+		return listAgeGroup;
 	}
 	//delete a ageGroup
 	public void deleteAgeGroup(Long id) {
