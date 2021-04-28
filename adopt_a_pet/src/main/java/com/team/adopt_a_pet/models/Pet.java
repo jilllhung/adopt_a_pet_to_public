@@ -32,7 +32,7 @@ public class Pet {
     private String state;
     private String postalCode;
     // Many To One Relationship w/ AgeGroup
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="agegroup_id")
     private AgeGroup ageGroup;
     private String ageString;
@@ -41,10 +41,10 @@ public class Pet {
     private Boolean isBirthDateExact;
     private String breedString;
     // Two Many To One Relationship w/ Breed
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="breedprimary_id")
     private Breed breedPrimary;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="breedsecondary_id")
     private Breed breedSecondary;
 //    "breedPrimaryId": 24,
@@ -59,11 +59,11 @@ public class Pet {
     private String slug;
     private String trackerimageUrl;
     // One To Many Relationship w/ Organization
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="organization_id")
     private Organization organization;
     // One To Many Relationship w/ Species
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="species_id")
     private Species species;
 
@@ -98,6 +98,7 @@ public class Pet {
     	this.city = city;
     	this.state = state;
     	this.postalCode = postalCode;
+    	this.pictureThumbnailUrl=pictureThumbnailUrl;
 //    	this.ageString = ageString;
     	
     }

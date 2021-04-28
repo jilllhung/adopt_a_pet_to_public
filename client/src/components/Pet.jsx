@@ -5,10 +5,14 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import {navigate} from '@reach/router';
+
 
 const useStyles = makeStyles({
     root: {
-        minWidth: 275,
+        maxWidth: "275px",
+        width:"18vw",
+        minWidth: "194px",
         display: 'inline-block',
     },
     bullet: {
@@ -22,10 +26,17 @@ const useStyles = makeStyles({
     pos: {
         marginBottom: 12,
     },
+    img:{
+        width:"100%",
+        maxHeight: "275px",
+    }
 });
 
 export default (props)=>{
     const classes = useStyles();
+    let btnAct=()=>{
+        navigate(`/animals/${props.pet.id}`);
+    }
     return(
         // <div className="pet">
         //     <p>{props.pet.name}</p>
@@ -35,20 +46,25 @@ export default (props)=>{
                 <Typography className={classes.title} color="textSecondary" gutterBottom>
                 Looking for a good home
                 </Typography>
+                <img src={props.pet.pictureThumbnailUrl} alt="{props.pet.name}'s picture" className={classes.img}/>
                 <Typography variant="h5" component="h2">
                     {props.pet.name}
                 </Typography>
-                {/* <Typography className={classes.pos} color="textSecondary">
-                adjective
+                <Typography className={classes.pos} color="textSecondary">
+                Age group
                 </Typography>
                 <Typography variant="body2" component="p">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-                </Typography> */}
+                {props.pet.ageGroup.name}
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                Location
+                </Typography>
+                <Typography variant="body2" component="p">
+                {props.pet.city}, {props.pet.state}
+                </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Learn More</Button>
+                <Button size="small" onClick={btnAct}>Learn More</Button>
             </CardActions>
         </Card>
     )

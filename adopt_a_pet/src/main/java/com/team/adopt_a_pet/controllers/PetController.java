@@ -4,7 +4,10 @@ package com.team.adopt_a_pet.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,10 +36,6 @@ public class PetController {
 	@Autowired
 	public AgeGroupService ageGroupServ;
 	
-	@RequestMapping("/pets/all")
-	public List<Pet> getAllPets(){
-		return petServ.getAllPets();
-	}
 	
 	@RequestMapping("/getpets")
 	public List<Test> test() {
@@ -84,6 +83,14 @@ public class PetController {
 		return petServ.getAllPets();
 	}
 	
+	@RequestMapping("/pets/all")
+	public List<Pet> getPets(){
+		return petServ.getAllPets();
+	}
+	@RequestMapping("/pets/{pid}")
+	public Pet getPets(@PathVariable Long pid){
+		return petServ.getPet(pid);
+	}
 
 //    @RequestMapping("/getPets")
 //    public String getPets() {
