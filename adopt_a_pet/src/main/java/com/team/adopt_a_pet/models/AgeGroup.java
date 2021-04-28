@@ -26,7 +26,7 @@ public class AgeGroup {
 	@NotNull
 	private String name;
 	
-    @OneToMany(mappedBy="ageGroup", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="agegroup", fetch = FetchType.LAZY)
     private List<Pet> pets;
     
 	// This will not allow the createdAt column to be updated after creation

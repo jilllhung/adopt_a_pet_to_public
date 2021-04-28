@@ -40,7 +40,7 @@ public class Organization {
 //    "coordinates": "39.2675, -76.7446",
 //    "citystate": "Catonsville, MD"
 	
-    @OneToMany(mappedBy="organization", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="organizations", fetch = FetchType.LAZY)
     private List<Pet> pets;
 	
 	// This will not allow the createdAt column to be updated after creation

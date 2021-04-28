@@ -14,8 +14,11 @@ import com.team.adopt_a_pet.models.Test;
 
 @RestController //parses object and turns into json for you and then sends it off.
 public class PetController {
+	public static void main(String[] args) {
+		SpringApplication.run(PetController.class, args);
+	}
 	
-	@RequestMapping("/getpets") 
+	@RequestMapping("/getPets") 
 	
 //	public Test getPets() {
 //		Test test = new Test();
