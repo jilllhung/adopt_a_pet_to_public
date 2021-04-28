@@ -53,6 +53,10 @@ public class Breed {
     protected void onUpdate(){
     	this.updatedAt = new Date();
     }
+    @Override
+    public String toString() {
+    	return "Breed{id: "+id+"|name: "+name+"}";
+    }
     
     //Empty Constructor
     public Breed() {

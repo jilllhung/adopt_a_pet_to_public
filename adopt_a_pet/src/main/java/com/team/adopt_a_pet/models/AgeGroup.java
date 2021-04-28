@@ -51,6 +51,11 @@ public class AgeGroup {
         this.updatedAt = new Date();
     }
     
+    @Override
+    public String toString() {
+    	return "Age{id: "+id+"|name: "+name+"}";
+    }
+    
     //Empty Constructor
     public AgeGroup() {
     }

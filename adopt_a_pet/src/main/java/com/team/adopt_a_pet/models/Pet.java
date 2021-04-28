@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,7 +24,7 @@ public class Pet {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	@NotNull
+	@NotBlank
 	private String name;
 	private String description;
 	private Double longitude;
@@ -74,6 +75,11 @@ public class Pet {
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
+    
+    @Override
+    public String toString() {
+    	return "Pet{id: "+id+"|Rescue Id: "+rescueId+"|name: "+name+"|Species: "+species+"|AgeGroup: "+ageGroup+"|BreedP: "+breedPrimary+"|Org: "+organization+"}";
+    }
     
     //runs the method(get dates) right before the object is created
     @PrePersist 

@@ -4,12 +4,19 @@ package com.team.adopt_a_pet.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Binding;
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.team.adopt_a_pet.models.AgeGroup;
 import com.team.adopt_a_pet.models.Breed;
@@ -91,13 +98,32 @@ public class PetController {
 	//Get Specific Pet By ID
 	@RequestMapping("/pets/{pid}")
 	public Pet getPets(@PathVariable Long pid){
-		return petServ.getPet(pid);
+		Pet x=petServ.getPet(pid);
+		System.out.println(x);
+		return x;
 	}
 	//Get All Pets of a Specific AgeGroup
 	@RequestMapping("/pets/agegroup/{age}")
 	public List<Pet> getAllPetsOfAgeGroup(@PathVariable String age){
 		AgeGroup thisAgeGroup = ageGroupServ.getAgeGroupByName(age);
 		return thisAgeGroup.getPets();
+	}
+	//Create new Pet
+	@PostMapping("/pets/new")
+	public Pet createPet(@Valid @RequestBody Pet p, BindingResult res) throws ResponseStatusException{
+		Pet x=null;
+		if(!res.hasErrors()) {
+			x=petServ.createPet(p);
+			x=petServ.getPet(x.getId());
+			System.out.println(x);
+		}
+		else {
+			System.out.println("Error");
+			System.out.println(p);
+			throw new ResponseStatusException(
+			          HttpStatus.BAD_REQUEST, "Invalid Pet");
+		}
+		return x;
 	}
 //    @RequestMapping("/getPets")
 //    public String getPets() {
