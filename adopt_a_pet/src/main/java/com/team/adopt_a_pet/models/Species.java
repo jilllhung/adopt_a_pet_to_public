@@ -52,6 +52,11 @@ public class Species {
         this.updatedAt = new Date();
     }
     
+    @Override
+    public String toString() {
+    	return "Species{id: "+id+"|name: "+name+"}";
+    }
+    
     //Empty Controller
     public Species() {
     	
