@@ -23,10 +23,10 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	@NotBlank
-	private String name;
+	private String ownerName;
 	private String email;
 	private String number;
-	private String petName;
+	private String name;
 	private String description;
 	private Double longitude;
 	private Double latitude;
@@ -98,9 +98,9 @@ public class Pet {
     public Pet() {
     }
     
-    public Pet(String petName, String description, 
+    public Pet(String name, String description, 
     		String city, String state, String postalCode, String pictureThumbnailUrl) {
-    	this.petName = petName;
+    	this.name = name;
     	this.description = description;
     	this.city = city;
     	this.state = state;
@@ -116,12 +116,12 @@ public class Pet {
 	public Long getId() {
 		return id;
 	}
-	public String getName() {
-		return name;
+	public String getOwnerName() {
+		return ownerName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
 	}
 
 	public String getEmail() {
@@ -143,11 +143,11 @@ public class Pet {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getPetName() {
-		return petName;
+	public String getName() {
+		return name;
 	}
-	public void setPetName(String petName) {
-		this.petName = petName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getDescription() {
 		return description;
