@@ -4,24 +4,20 @@ package com.team.adopt_a_pet.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.team.adopt_a_pet.models.Pet;
 import com.team.adopt_a_pet.models.Test;
+import com.team.adopt_a_pet.services.PetService;
 
 @RestController //parses object and turns into json for you and then sends it off.
 public class PetController {
+	public PetService petServ;
+	public PetController(PetService petServ) {
+		this.petServ = petServ;
+	}
 	
 	@RequestMapping("/getpets") 
-	
-//	public Test getPets() {
-//		Test test = new Test();
-//		test.setName("hello");
-//				return test;
-		//grab object data and convert to json
-		// return json object as a string
-	//}
 	public List<Test> test() {
 		List<Test> test = new ArrayList<>(); //arraylist inherits from list
 		Test dog = new Test();
@@ -30,9 +26,14 @@ public class PetController {
 		cat.setName("Clover");
 		test.add(dog);
 		test.add(cat);
-				return test;
+		return test;
 		//grab object data and convert to json
 		// return json object as a string
+	}
+	
+	public Pet displayFakePet() {
+		Pet newPet = petServ.createFakePet();
+		return newPet;
 	}
 	
 //    @RequestMapping("/getPets")
