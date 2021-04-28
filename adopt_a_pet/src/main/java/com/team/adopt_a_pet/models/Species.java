@@ -24,6 +24,7 @@ public class Species {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	@NotNull
+	@Column(unique = true)
 	private String name;
 	
     @OneToMany(mappedBy="species", fetch = FetchType.LAZY)
