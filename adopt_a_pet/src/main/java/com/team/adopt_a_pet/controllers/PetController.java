@@ -83,15 +83,22 @@ public class PetController {
 		return petServ.getAllPets();
 	}
 	
+	//Get All Pets
 	@RequestMapping("/pets/all")
 	public List<Pet> getPets(){
 		return petServ.getAllPets();
 	}
+	//Get Specific Pet By ID
 	@RequestMapping("/pets/{pid}")
 	public Pet getPets(@PathVariable Long pid){
 		return petServ.getPet(pid);
 	}
-
+	//Get All Pets of a Specific AgeGroup
+	@RequestMapping("/pets/agegroup/{age}")
+	public List<Pet> getAllPetsOfAgeGroup(@PathVariable String age){
+		AgeGroup thisAgeGroup = ageGroupServ.getAgeGroupByName(age);
+		return thisAgeGroup.getPets();
+	}
 //    @RequestMapping("/getPets")
 //    public String getPets() {
 //    	try {
