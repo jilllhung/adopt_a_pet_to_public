@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "breeds")
 public class Breed {
@@ -26,8 +28,10 @@ public class Breed {
 	@NotNull
 	private String name;
 	
+	@JsonIgnore
     @OneToMany(mappedBy="breedPrimary", fetch = FetchType.LAZY)
     private List<Pet> primaryBreedPets;
+	@JsonIgnore
     @OneToMany(mappedBy="breedSecondary", fetch = FetchType.LAZY)
     private List<Pet> secondaryBreedPets;
 	

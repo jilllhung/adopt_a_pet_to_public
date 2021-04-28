@@ -13,6 +13,7 @@ import com.team.adopt_a_pet.repositories.PetRepository;
 public class PetService {
 	@Autowired
 	private PetRepository petRepo;
+	@Autowired
 	private  AgeGroupService ageGroupServ;
 	
 	public Pet createFakePet() {
