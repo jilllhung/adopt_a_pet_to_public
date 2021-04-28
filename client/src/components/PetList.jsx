@@ -27,6 +27,7 @@ const useStyles = makeStyles({
         gap:"15px",
         padding:"15px",
     },
+
 });
 
 export default (props)=>{
@@ -62,7 +63,7 @@ export default (props)=>{
         setAge(e.target.value);
     }
     return(
-        <div >
+        <div>
             <div className={classes.form}>
                 <div className={classes.formEle}>
                     <label htmlFor="ageGroup">Age Group</label>
@@ -74,6 +75,7 @@ export default (props)=>{
                     </select>
                 </div>
             </div>
+            <h1 style={{margin:"15px"}}>Adopt Me Please</h1>
             <div className={classes.showdiv}>
             {
             pets.map((pet,i)=>
