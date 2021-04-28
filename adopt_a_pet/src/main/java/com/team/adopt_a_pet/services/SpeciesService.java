@@ -31,4 +31,12 @@ public class SpeciesService {
 	public void deleteSpecies(Long id) {
 		speciesRepo.deleteById(id);
 	}
+	
+	//Manually Add Dummy Species
+	public void addDummySpecies() {
+		Species species1 = new Species();
+		species1.setName("dog");
+		Species species2 = new Species();
+		species2.setName("cat");
+	}
 }
