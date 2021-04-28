@@ -31,4 +31,28 @@ public class OrganizationService {
 	public void deleteOrganization(Long id) {
 		organizationRepo.deleteById(id);
 	}
+	
+	//add dummy organizations manually
+	public void addDummyOrg() {
+		Organization org1 = new Organization();
+		org1.setName("Tampa Bay Beagle Rescue, Inc.");
+		org1.setCity("Tampa");
+		org1.setPhone("(813) 446-9663");
+		org1.setPostalcode("33688");
+		org1.setState("FL");
+		org1.setUrl("www.tampabaybeaglerescue.org");
+		org1.setLat(28.0054);
+		org1.setLon(-82.4877);
+		Organization org2 = new Organization();
+		org2.setName("Genesis Animal Rescue");
+		org2.setCity("Mattoon");
+		org2.setPhone("(800) 688-7934");
+		org2.setPostalcode("61938");
+		org2.setState("IL");
+		org2.setUrl("http://www.genesisanimalrescue.org");
+		org2.setLat(39.4763);
+		org2.setLon(-88.3595);
+		org2.setStreet("PO Box 1985");
+		org2.setEmail("info@genesisanimalrescue.org");
+	}
 }
