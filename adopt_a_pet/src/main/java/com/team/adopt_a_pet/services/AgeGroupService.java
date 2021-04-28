@@ -22,10 +22,15 @@ public class AgeGroupService {
 	public List<AgeGroup> getAllAgeGroups(){
 		return ageGroupRepo.findAll();
 	}
-	//retrieve a ageGroup
+	//retrieve a ageGroup by id
 	public AgeGroup getAgeGroup(Long id) {
 		Optional<AgeGroup> optionalAgeGroup = ageGroupRepo.findById(id);
 		return optionalAgeGroup.orElse(null);
+	}
+	//retrieve a ageGroup by name
+	public AgeGroup getAgeGroupByName(String name) {
+		List<AgeGroup> listAgeGroup = ageGroupRepo.findByName(name);
+		return listAgeGroup.get(0);
 	}
 	//delete a ageGroup
 	public void deleteAgeGroup(Long id) {
@@ -36,9 +41,12 @@ public class AgeGroupService {
 	public void addDummyAgeGroups() {
 		AgeGroup ageGroup1 = new AgeGroup();
 		ageGroup1.setName("Young");
+		ageGroupRepo.save(ageGroup1);
 		AgeGroup ageGroup2 = new AgeGroup();
 		ageGroup2.setName("Adult");
+		ageGroupRepo.save(ageGroup2);
 		AgeGroup ageGroup3 = new AgeGroup();
 		ageGroup3.setName("Senior");
+		ageGroupRepo.save(ageGroup3);
 	}
 }
