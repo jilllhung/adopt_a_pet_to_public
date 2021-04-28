@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "agegroups")
 public class AgeGroup {
@@ -24,8 +26,10 @@ public class AgeGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	@NotNull
+	@Column(unique = true)
 	private String name;
 	
+	@JsonIgnore
     @OneToMany(mappedBy="ageGroup", fetch = FetchType.LAZY)
     private List<Pet> pets;
     

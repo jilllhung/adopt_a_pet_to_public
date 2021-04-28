@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "organizations")
 public class Organization {
@@ -41,7 +43,7 @@ public class Organization {
 	private Double lon; //39.2675
 //    "coordinates": "39.2675, -76.7446",
 //    "citystate": "Catonsville, MD"
-	
+	@JsonIgnore
     @OneToMany(mappedBy="organization", fetch = FetchType.LAZY)
     private List<Pet> pets;
 	
