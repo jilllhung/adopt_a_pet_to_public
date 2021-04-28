@@ -36,7 +36,9 @@ public class SpeciesService {
 	public void addDummySpecies() {
 		Species species1 = new Species();
 		species1.setName("dog");
+		speciesRepo.save(species1);
 		Species species2 = new Species();
 		species2.setName("cat");
+		speciesRepo.save(species2);
 	}
 }

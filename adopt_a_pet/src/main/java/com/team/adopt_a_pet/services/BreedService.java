@@ -36,11 +36,15 @@ public class BreedService {
 	public void addDummyBreeds() {
 		Breed breed1 = new Breed();
 		breed1.setName("Domestic Short Hair");
+		breedRepo.save(breed1);
 		Breed breed2 = new Breed();
 		breed2.setName("Domestic Long Hair");
+		breedRepo.save(breed2);
 		Breed breed3 = new Breed();
 		breed3.setName("Golden Retriever");
+		breedRepo.save(breed3);
 		Breed breed4 = new Breed();
 		breed4.setName("Corgy");
+		breedRepo.save(breed4);
 	}
 }

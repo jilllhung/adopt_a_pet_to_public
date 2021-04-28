@@ -4,20 +4,41 @@ package com.team.adopt_a_pet.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.team.adopt_a_pet.models.AgeGroup;
+import com.team.adopt_a_pet.models.Breed;
+import com.team.adopt_a_pet.models.Organization;
 import com.team.adopt_a_pet.models.Pet;
+import com.team.adopt_a_pet.models.Species;
 import com.team.adopt_a_pet.models.Test;
+import com.team.adopt_a_pet.services.AgeGroupService;
+import com.team.adopt_a_pet.services.BreedService;
+import com.team.adopt_a_pet.services.OrganizationService;
 import com.team.adopt_a_pet.services.PetService;
+import com.team.adopt_a_pet.services.SpeciesService;
 
 @RestController //parses object and turns into json for you and then sends it off.
 public class PetController {
+	@Autowired
 	public PetService petServ;
-	public PetController(PetService petServ) {
-		this.petServ = petServ;
+	@Autowired
+	public OrganizationService orgServ;
+	@Autowired
+	public BreedService breedServ;
+	@Autowired
+	public SpeciesService speciesServ;
+	@Autowired
+	public AgeGroupService ageGroupServ;
+	
+	@RequestMapping("pets/all")
+	public List<Pet> getAllPets(){
+		return petServ.getAllPets();
 	}
 	
-	@RequestMapping("/getpets") 
+	@RequestMapping("/getpets")
 	public List<Test> test() {
 		List<Test> test = new ArrayList<>(); //arraylist inherits from list
 		Test dog = new Test();
@@ -30,12 +51,40 @@ public class PetController {
 		//grab object data and convert to json
 		// return json object as a string
 	}
-	
+	@RequestMapping("/getfakepet")
 	public Pet displayFakePet() {
 		Pet newPet = petServ.createFakePet();
 		return newPet;
 	}
 	
+	//Create and add dummy entities to database
+	@RequestMapping("/dummy/organization")
+	public List<Organization> createOrgToDataBase() {
+		orgServ.addDummyOrg();
+		return orgServ.getAllOrganizations();
+	}
+	@RequestMapping("/dummy/breed")
+	public List<Breed> createBreedToDataBase() {
+		breedServ.addDummyBreeds();
+		return breedServ.getAllBreeds();
+	}
+	@RequestMapping("/dummy/species")
+	public List<Species> createSpeciesToDataBase() {
+		speciesServ.addDummySpecies();
+		return speciesServ.getAllSpeciess();
+	}
+	@RequestMapping("/dummy/agegroups")
+	public List<AgeGroup> createAgeGroupsToDataBase() {
+		ageGroupServ.addDummyAgeGroups();
+		return ageGroupServ.getAllAgeGroups();
+	}
+	@RequestMapping("/dummy/pets")
+	public List<Pet> createPetsToDataBase() {
+		petServ.dummyPetToDataBase();
+		return petServ.getAllPets();
+	}
+	
+
 //    @RequestMapping("/getPets")
 //    public String getPets() {
 //    	try {
