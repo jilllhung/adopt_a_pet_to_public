@@ -32,5 +32,13 @@ public class AgeGroupService {
 		ageGroupRepo.deleteById(id);
 	}
 	
-	//Manually Add AgeGroups
+	//Manually Add Dummy AgeGroups
+	public void addDummyAgeGroups() {
+		AgeGroup ageGroup1 = new AgeGroup();
+		ageGroup1.setName("Young");
+		AgeGroup ageGroup2 = new AgeGroup();
+		ageGroup2.setName("Adult");
+		AgeGroup ageGroup3 = new AgeGroup();
+		ageGroup3.setName("Senior");
+	}
 }

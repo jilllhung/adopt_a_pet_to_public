@@ -27,6 +27,8 @@ public class Organization {
 	private String name;
 	private String city;
 	private String state;
+	private String street;
+	private String email;
 	private String postalcode;
 //    "postalcodePlus4"
 //    "country": "United States",
@@ -35,8 +37,8 @@ public class Organization {
 //    "meetPets: [""]
 	private String type; //"Rescue"
 	private Boolean isCommonapplicationAccepted;
-	private String lat; //39.2675
-	private String lon; //39.2675
+	private Double lat; //39.2675
+	private Double lon; //39.2675
 //    "coordinates": "39.2675, -76.7446",
 //    "citystate": "Catonsville, MD"
 	
@@ -140,19 +142,19 @@ public class Organization {
 		this.isCommonapplicationAccepted = isCommonapplicationAccepted;
 	}
 
-	public String getLat() {
+	public Double getLat() {
 		return lat;
 	}
 
-	public void setLat(String lat) {
+	public void setLat(Double lat) {
 		this.lat = lat;
 	}
 
-	public String getLon() {
+	public Double getLon() {
 		return lon;
 	}
 
-	public void setLon(String lon) {
+	public void setLon(Double lon) {
 		this.lon = lon;
 	}
 	public Date getCreatedAt() {
@@ -172,5 +174,17 @@ public class Organization {
 	}
 	public void setPets(List<Pet> pets) {
 		this.pets = pets;
+	}
+	public String getStreet() {
+		return street;
+	}
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

@@ -31,4 +31,16 @@ public class BreedService {
 	public void deleteBreed(Long id) {
 		breedRepo.deleteById(id);
 	}
+	
+	//Add dummy breeds manually
+	public void addDummyBreeds() {
+		Breed breed1 = new Breed();
+		breed1.setName("Domestic Short Hair");
+		Breed breed2 = new Breed();
+		breed2.setName("Domestic Long Hair");
+		Breed breed3 = new Breed();
+		breed3.setName("Golden Retriever");
+		Breed breed4 = new Breed();
+		breed4.setName("Corgy");
+	}
 }
