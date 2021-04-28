@@ -99,6 +99,13 @@ public class PetController {
 		AgeGroup thisAgeGroup = ageGroupServ.getAgeGroupByName(age);
 		return thisAgeGroup.getPets();
 	}
+	//Create new Pet
+	@RequestMapping("/pets/new")
+	public Pet getAllPetsOfAgeGroup(){
+		List<Pet> ptesting=petServ.getAllPets();
+		System.out.println(ptesting);
+		return ptesting.get(0);
+	}
 //    @RequestMapping("/getPets")
 //    public String getPets() {
 //    	try {

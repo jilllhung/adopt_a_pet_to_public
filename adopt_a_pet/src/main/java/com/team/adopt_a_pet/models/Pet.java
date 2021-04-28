@@ -77,7 +77,7 @@ public class Pet {
     
     @Override
     public String toString() {
-    	return "Pet{id: "+id+"|Rescue Id: "+rescueId+"|name: "+name+"|Species: "+species+"|AgeGroup: "+ageString+"|BreedP: "+breedPrimary+"|Org: "+organization+"}";
+    	return "Pet{id: "+id+"|Rescue Id: "+rescueId+"|name: "+name+"|Species: "+species+"|AgeGroup: "+ageGroup+"|BreedP: "+breedPrimary+"|Org: "+organization+"}";
     }
     
     //runs the method(get dates) right before the object is created
