@@ -91,6 +91,17 @@ public class Pet {
     public Pet() {
     }
     
+    public Pet(String name, String description, 
+    		String city, String state, String postalCode, String pictureThumbnailUrl) {
+    	this.name = name;
+    	this.description = description;
+    	this.city = city;
+    	this.state = state;
+    	this.postalCode = postalCode;
+//    	this.ageString = ageString;
+    	
+    }
+    
     //Getters and Setters
 	public Long getId() {
 		return id;
