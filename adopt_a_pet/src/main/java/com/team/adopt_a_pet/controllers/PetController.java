@@ -11,6 +11,8 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,8 @@ public class PetController {
 	public SpeciesService speciesServ;
 	@Autowired
 	public AgeGroupService ageGroupServ;
-	
+	@Autowired
+	private Validator validator;
 	
 	@RequestMapping("/getpets")
 	public List<Test> test() {
@@ -110,8 +113,17 @@ public class PetController {
 	}
 	//Create new Pet
 	@PostMapping("/pets/new")
-	public Pet createPet(@Valid @RequestBody Pet p, BindingResult res) throws ResponseStatusException{
+	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{
+		Pet x=mkPet(p);
+		x=petServ.getPet(x.getId());
+		return x;
+	}
+	public Pet mkPet(Pet p){
 		Pet x=null;
+		DataBinder binder=new DataBinder(p);
+		binder.setValidator(validator);
+		binder.validate();
+		BindingResult res=binder.getBindingResult();
 		if(!res.hasErrors()) {
 			x=petServ.createPet(p);
 			x=petServ.getPet(x.getId());
@@ -119,9 +131,8 @@ public class PetController {
 		}
 		else {
 			System.out.println("Error");
+			System.out.println(res.getAllErrors());
 			System.out.println(p);
-			throw new ResponseStatusException(
-			          HttpStatus.BAD_REQUEST, "Invalid Pet");
 		}
 		return x;
 	}
