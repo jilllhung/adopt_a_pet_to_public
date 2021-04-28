@@ -4,31 +4,17 @@ import axios from 'axios';
 
 function App() {
   let x=async ()=>{
-    // try{
+    try{
       let z=await axios.get("http://localhost:8080/getpets");
       console.log(z);
-    // }
-    // catch(e){
-    //   console.log(e)
-    // }
+    }
+    catch(e){
+      console.log(e)
+    }
   }
   x();
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
     </div>
   );
 }
