@@ -115,6 +115,7 @@ public class PetController {
 	@PostMapping("/pets/new")
 	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{
 		Pet x=mkPet(p);
+		x=petServ.getPet(x.getId());
 		return x;
 	}
 	public Pet mkPet(Pet p){
