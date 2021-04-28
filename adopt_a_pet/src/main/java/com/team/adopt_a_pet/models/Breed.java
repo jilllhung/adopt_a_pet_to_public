@@ -17,10 +17,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-/**
- * @author Matthew
- *
- */
 @Entity
 @Table(name = "breeds")
 public class Breed {
@@ -95,4 +91,5 @@ public class Breed {
 	public void setSecondaryBreedPets(List<Pet> secondaryBreedPets) {
 		this.secondaryBreedPets = secondaryBreedPets;
 	}
+    
 }
