@@ -26,9 +26,9 @@ public class Breed {
 	@NotNull
 	private String name;
 	
-    @OneToMany(mappedBy="breedprimary", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="breedPrimary", fetch = FetchType.LAZY)
     private List<Pet> primaryBreedPets;
-    @OneToMany(mappedBy="breedsecondary", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="breedSecondary", fetch = FetchType.LAZY)
     private List<Pet> secondaryBreedPets;
 	
 	// This will not allow the createdAt column to be updated after creation
