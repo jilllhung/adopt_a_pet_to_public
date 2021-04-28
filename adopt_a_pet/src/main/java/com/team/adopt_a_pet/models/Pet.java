@@ -14,8 +14,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -26,6 +24,9 @@ public class Pet {
     private Long id;
 	@NotBlank
 	private String name;
+	private String email;
+	private String number;
+	private String petName;
 	private String description;
 	private Double longitude;
 	private Double latitude;
@@ -78,7 +79,7 @@ public class Pet {
     
     @Override
     public String toString() {
-    	return "Pet{id: "+id+"|Rescue Id: "+rescueId+"|name: "+name+"|Species: "+species+"|AgeGroup: "+ageGroup+"|BreedP: "+breedPrimary+"|Org: "+organization+"}";
+    	return "Pet{id: "+id+"|Rescue Id: "+rescueId+"|petName: "+petName+"|Species: "+species+"|AgeGroup: "+ageGroup+"|BreedP: "+breedPrimary+"|Org: "+organization+"}";
     }
     
     //runs the method(get dates) right before the object is created
@@ -97,9 +98,9 @@ public class Pet {
     public Pet() {
     }
     
-    public Pet(String name, String description, 
+    public Pet(String petName, String description, 
     		String city, String state, String postalCode, String pictureThumbnailUrl) {
-    	this.name = name;
+    	this.petName = petName;
     	this.description = description;
     	this.city = city;
     	this.state = state;
@@ -110,17 +111,43 @@ public class Pet {
     }
     
     //Getters and Setters
+    
+    
 	public Long getId() {
 		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
 	}
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getPetName() {
+		return petName;
+	}
+	public void setPetName(String petName) {
+		this.petName = petName;
 	}
 	public String getDescription() {
 		return description;
