@@ -5,10 +5,10 @@ import {Link} from '@reach/router';
 
 export default() => {
     //const [selectedFile, setSelectedFile] = useState(null);
-    const [name, setName] = useState('');
+    const [ownerName, setOwnerName] = useState('');
     const [email, setEmail] = useState('');
     const [number, setNumber] = useState('');
-    const [petName, setPetName] = useState('');
+    const [name, setName] = useState('');
     const [ageString, setAgeString] = useState('');
     const [primaryBreed, setPrimaryBreed] = useState('');
     const [secondaryBreed, setSecondaryBreed] = useState('');
@@ -86,13 +86,13 @@ export default() => {
                 <h2>Add a Pet: </h2>
                 {errors.map((err, index) => <p key={index}>{err}</p>)} 
                 <p>Your Name: </p>
-                <input type="text" value={ name } onChange = {(e) =>setName(e.target.value)}/>
+                <input type="text" value={ ownerName } onChange = {(e) =>setOwnerName(e.target.value)}/>
                 <p>Email: </p>
                 <input type="text" value={ email } onChange = {(e) =>setEmail(e.target.value)}/>
                 <p>Phone Number(Optional): </p>
                 <input type="text" value={ number } onChange = {(e) =>setPhoneNumber(e.target.value)}/>
                 <p>Pet Name: </p>
-                <input type="text" value={ petName } onChange = {(e) =>setPetName(e.target.value)}/>
+                <input type="text" value={ name } onChange = {(e) =>setName(e.target.value)}/>
                 <p>Species: </p>
                 <select  onChange={(e) => setSpecies(e.target.value)} value={species} id="">
                   <option value="Husky">Husky</option>
