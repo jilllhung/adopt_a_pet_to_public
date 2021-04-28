@@ -33,7 +33,7 @@ public class PetController {
 	@Autowired
 	public AgeGroupService ageGroupServ;
 	
-	@RequestMapping("pets/all")
+	@RequestMapping("/pets/all")
 	public List<Pet> getAllPets(){
 		return petServ.getAllPets();
 	}
