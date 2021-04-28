@@ -66,6 +66,11 @@ public class Organization {
     	this.updatedAt = new Date();
     }
 	
+    @Override
+    public String toString() {
+    	return "Org{id: "+id+"|name: "+name+"|Location: "+city+", "+state+" "+postalcode+"|Site: "+url+"}";
+    }
+    
 	//Empty Constructor
 	public Organization() {
 		

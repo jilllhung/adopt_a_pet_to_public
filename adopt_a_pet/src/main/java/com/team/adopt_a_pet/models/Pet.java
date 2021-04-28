@@ -75,6 +75,11 @@ public class Pet {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
     
+    @Override
+    public String toString() {
+    	return "Pet{id: "+id+"|Rescue Id: "+rescueId+"|name: "+name+"|Species: "+species+"|AgeGroup: "+ageString+"|BreedP: "+breedPrimary+"|Org: "+organization+"}";
+    }
+    
     //runs the method(get dates) right before the object is created
     @PrePersist 
     protected void onCreate(){
