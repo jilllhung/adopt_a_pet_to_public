@@ -84,6 +84,9 @@ public class Breed {
     //Empty Constructor
     public Breed() {
     }
+    public Breed(String name) {
+    	this.name = name;
+    }
     
     //Getters and Setters
 	public Long getId() {

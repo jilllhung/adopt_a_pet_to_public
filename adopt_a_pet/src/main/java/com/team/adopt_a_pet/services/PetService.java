@@ -35,7 +35,10 @@ public class PetService {
 	public Pet createPet(Pet pet) {
 		return petRepo.save(pet);
 	}
-	
+	//save&&flush
+	public Pet saveAndFlushPet(Pet pet) {
+		return petRepo.saveAndFlush(pet);
+	}
 	//getAllPets
 	public List<Pet> getAllPets(){
 		return petRepo.findAll();
