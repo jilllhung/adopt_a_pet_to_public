@@ -208,6 +208,7 @@ public class PetController {
 				limit=matcher.group(0);
 			}
 			limit=limit.split(":")[1];
+			
 			urlString="https://api.rescuegroups.org/v5/public/animals/breeds/search/cats/?limit="+limit;
 			url=new URL(urlString);
 			con=(HttpURLConnection) url.openConnection();
@@ -223,7 +224,9 @@ public class PetController {
 			    content.append(inputLine);
 			}
 			requestResults=content.toString();
-			System.out.println(requestResults.split("\"},\"data\":")[1]);
+			String tArr=requestResults.split("\"},\"data\":")[1];
+			System.out.println(tArr);
+			breedServ.parseBreed(tArr);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

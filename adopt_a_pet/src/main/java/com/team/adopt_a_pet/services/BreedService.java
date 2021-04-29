@@ -88,16 +88,21 @@ public class BreedService {
 //				+ "                \"name\": \"American Curl\"\r\n"
 //				+ "            }\r\n"
 //				+ "        },";
-		String[] arrayBreed = breeds.split("name\": \"");
+		String[] arrayBreed = breeds.split("name\":\"");
+		System.out.println(arrayBreed.length);
 //		List<String> rawBreeds = new ArrayList<String>();
 //		rawBreeds = Arrays.asList(arrayBreed);
 		int indexOfFirstQuote = 0;
 		for(int i=1; i<arrayBreed.length; i++) {
-			indexOfFirstQuote = arrayBreed[i].indexOf("\"");
+			indexOfFirstQuote = arrayBreed[i].indexOf('"');
 			arrayBreed[i] = arrayBreed[i].substring(0, indexOfFirstQuote);
+			System.out.println(arrayBreed[i]);
 			//add to database
-			Breed toBeAdded = new Breed(arrayBreed[i]);
-			this.createBreed(toBeAdded);
+//			Breed toBeAdded = new Breed(arrayBreed[i]);
+//			this.createBreed(toBeAdded);
 		}
+//		for(int i=1; i<arrayBreed.length; i++) {
+//			System.out.println(arrayBreed[i]);
+//		}
 	}
 }
