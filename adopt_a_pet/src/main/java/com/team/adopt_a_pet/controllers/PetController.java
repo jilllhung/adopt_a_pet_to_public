@@ -156,28 +156,28 @@ public class PetController {
 	@PostMapping("/pets/new")
 	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{//Pet p is information from submitted pet form
 		Pet x=mkPet(p);
-		x=petServ.getPet(x.getId());
 		return x;
 	}
-	//inspectPetandCreate
-	public Pet mkPet(Pet p){
-		Pet x=null;
-		DataBinder binder=new DataBinder(p);
-		binder.setValidator(validator);
-		binder.validate();
-		BindingResult res=binder.getBindingResult();
-		if(!res.hasErrors()) { //below trying to figure out why data that is coming back is null
-			x=petServ.saveAndFlushPet(p);
-			x=petServ.getPet(x.getId());
+//inspectPetandCreate
+public Pet mkPet(Pet p) throws ResponseStatusException{
+    Pet x=null;
+    DataBinder binder=new DataBinder(p);
+    binder.setValidator(validator);
+    binder.validate();
+    BindingResult res=binder.getBindingResult();
+    if(!res.hasErrors()) { //below trying to figure out why data that is coming back is null
+        x=petServ.saveAndFlushPet(p);
+        x=petServ.getPet(x.getId());
 //			System.out.println(x);
-		}
-		else {
-			System.out.println("Error");
-			System.out.println(res.getAllErrors());
+    }
+    else {
+        System.out.println("Error");
+        System.out.println(res.getAllErrors());
 //			System.out.println(p);
-		}
-		return x;
-	}
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Info Is Missing");
+    }
+    return x;
+}
 	//inspectBreedandCreate
 	public Breed mkBreed(Breed b){
 		Breed x=null;
