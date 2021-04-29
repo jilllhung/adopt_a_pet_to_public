@@ -35,25 +35,28 @@ export default (props)=>{
     let [pets,setPets]=useState([]);
     let [age,setAge]=useState("")
     let urlDict={
-        "":"http://localhost:8080/pets/all",
-        "young":"http://localhost:8080/pets/agegroup/young",
-        "adult":"http://localhost:8080/pets/agegroup/adult",
-        "senior":"http://localhost:8080/pets/agegroup/senior",
+        "":`http://localhost:8080/pets/species/${props.spec}/age/all`,
+        "young":`http://localhost:8080/pets/species/${props.spec}/age/young`,
+        "adult":`http://localhost:8080/pets/species/${props.spec}/age/adult`,
+        "senior":`http://localhost:8080/pets/species/${props.spec}/age/senior`,
 
     }
     useEffect(()=>{
         let loaded=true;
         let x=async ()=>{
-            if(urlDict[age]){
-                try{
-                    let z=await axios.get(urlDict[age]);
-                    console.log(z);
-                    if(loaded)setPets(z.data);
-                }
-                catch(e){
-                    console.log(e)
-                }
+            // if(urlDict[age]){
+            let params={
+                age
             }
+            try{
+                let z=await axios.get(`http://localhost:8080/pets/${props.spec}`,{params});
+                console.log(z);
+                if(loaded)setPets(z.data);
+            }
+            catch(e){
+                console.log(e)
+            }
+            // }
         }
         x();
         return ()=>{loaded=false;}

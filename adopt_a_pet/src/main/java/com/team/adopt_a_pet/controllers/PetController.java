@@ -140,6 +140,13 @@ public class PetController {
 		AgeGroup thisAgeGroup = ageGroupServ.getAgeGroupByName(age);
 		return thisAgeGroup.getPets();
 	}
+	//Get All Pets of a Specific Species
+	@RequestMapping("/pets/{spec}")
+	public List<Pet> getAllPetsOfSpecies(@PathVariable String spec){
+		Species thisSpecies = speciesServ.getSpecificSpecies(spec);
+		return thisSpecies.getPets();
+	}
+	
 	//Get All Breeds of a Specific Species
 	@RequestMapping("/breeds/species/{sp_id}")
 	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
@@ -149,28 +156,28 @@ public class PetController {
 	@PostMapping("/pets/new")
 	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{//Pet p is information from submitted pet form
 		Pet x=mkPet(p);
-		x=petServ.getPet(x.getId());
 		return x;
 	}
-	//inspectPetandCreate
-	public Pet mkPet(Pet p){
-		Pet x=null;
-		DataBinder binder=new DataBinder(p);
-		binder.setValidator(validator);
-		binder.validate();
-		BindingResult res=binder.getBindingResult();
-		if(!res.hasErrors()) { //below trying to figure out why data that is coming back is null
-			x=petServ.saveAndFlushPet(p);
-			x=petServ.getPet(x.getId());
+//inspectPetandCreate
+public Pet mkPet(Pet p) throws ResponseStatusException{
+    Pet x=null;
+    DataBinder binder=new DataBinder(p);
+    binder.setValidator(validator);
+    binder.validate();
+    BindingResult res=binder.getBindingResult();
+    if(!res.hasErrors()) { //below trying to figure out why data that is coming back is null
+        x=petServ.saveAndFlushPet(p);
+        x=petServ.getPet(x.getId());
 //			System.out.println(x);
-		}
-		else {
-			System.out.println("Error");
-			System.out.println(res.getAllErrors());
+    }
+    else {
+        System.out.println("Error");
+        System.out.println(res.getAllErrors());
 //			System.out.println(p);
-		}
-		return x;
-	}
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Info Is Missing");
+    }
+    return x;
+}
 	//inspectBreedandCreate
 	public Breed mkBreed(Breed b){
 		Breed x=null;
@@ -345,7 +352,7 @@ public class PetController {
 						  System.out.println(r.statusCode());
 					      return Mono.just("Error response");
 					  } else {
-					      return r.createException()
+						  return r.createException()
 					        .flatMap(Mono::error);
 					  }
 		});
