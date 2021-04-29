@@ -33,34 +33,22 @@ const useStyles = makeStyles({
 export default (props)=>{
     const classes = useStyles();
     let [pets,setPets]=useState([]);
-    let [age,setAge]=useState("")
-    let urlDict={
-        "":`http://localhost:8080/pets/species/${props.spec}/age/all`,
-        "young":`http://localhost:8080/pets/species/${props.spec}/age/young`,
-        "adult":`http://localhost:8080/pets/species/${props.spec}/age/adult`,
-        "senior":`http://localhost:8080/pets/species/${props.spec}/age/senior`,
-
-    }
+    let [age,setAge]=useState("");
     useEffect(()=>{
         let loaded=true;
         let x=async ()=>{
-            // if(urlDict[age]){
-            let params={
-                age
-            }
             try{
-                let z=await axios.get(`http://localhost:8080/pets/${props.spec}`,{params});
+                let z=await axios.get(`http://localhost:8080/pets/${props.spec}`);
                 console.log(z);
                 if(loaded)setPets(z.data);
             }
             catch(e){
                 console.log(e)
             }
-            // }
         }
         x();
         return ()=>{loaded=false;}
-    },[age,props.spec])
+    },[props.spec])
     let AgeSelect=(e)=>{
         console.log(e.target.value);
         setAge(e.target.value);
@@ -81,7 +69,9 @@ export default (props)=>{
             <h1 style={{margin:"15px"}}>Adopt Me Please</h1>
             <div className={classes.showdiv}>
             {
-            pets.map((pet,i)=>
+            pets
+            .filter(pet=>age===""||pet.ageGroup.name.toLowerCase()===age)
+            .map((pet,i)=>
                 <Pet key={i} pet={pet}/>
             )}
             </div>
