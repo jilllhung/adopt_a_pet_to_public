@@ -30,6 +30,10 @@ public class Species {
 	private String name;
 	
 	@JsonIgnore
+	@OneToMany(mappedBy="species")
+	private List<Breed> breeds;
+	
+	@JsonIgnore
     @OneToMany(mappedBy="species", fetch = FetchType.LAZY)
     private List<Pet> pets;
     
@@ -53,8 +57,22 @@ public class Species {
     }
     
     @Override
+    public boolean equals(Object o) {
+    	if(o == null) return false;
+    	if(o == this) return true;
+    	if(o instanceof Species) {
+    		Species s = (Species) o;
+    		return s.getName().equals(this.name);
+    	}
+    	return false;
+    }
+    @Override
+    public int hashCode() {
+    	return name.hashCode();
+    }
+    @Override
     public String toString() {
-    	return "Species{id: "+id+"|name: "+name+"}";
+    	return String.format("Species{id: %d|name: %s}", id, name);
     }
     
     //Empty Controller
