@@ -123,7 +123,7 @@ public class PetController {
 	}
 	//Create new Pet
 	@PostMapping("/pets/new")
-	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{
+	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{//Pet p is information from submitted pet form
 		Pet x=mkPet(p);
 		x=petServ.getPet(x.getId());
 		return x;
@@ -134,7 +134,7 @@ public class PetController {
 		binder.setValidator(validator);
 		binder.validate();
 		BindingResult res=binder.getBindingResult();
-		if(!res.hasErrors()) {
+		if(!res.hasErrors()) { //below trying to figure out why data that is coming back is null
 			x=petServ.createPet(p);
 			x=petServ.getPet(x.getId());
 //			System.out.println(x);
