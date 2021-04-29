@@ -16,16 +16,16 @@ const useStyles = makeStyles({
     form: {
         margin: "auto",
         display:"flex",
-        justifyContent:"space-between",
+        justifyContent:"center",
         gap:"15px",
         padding:"15px",
+        // border:"red dotted 1px"
     },
     formEle: {
-        margin: "auto",
         display:"flex",
-        justifyContent:"space-between",
         gap:"15px",
         padding:"15px",
+        // border:"red dotted 1px"
     },
 
 });
@@ -33,31 +33,31 @@ const useStyles = makeStyles({
 export default (props)=>{
     const classes = useStyles();
     let [pets,setPets]=useState([]);
-    let [age,setAge]=useState("")
-    let urlDict={
-        "":"http://localhost:8080/pets/all",
-        "young":"http://localhost:8080/pets/agegroup/young",
-        "adult":"http://localhost:8080/pets/agegroup/adult",
-        "senior":"http://localhost:8080/pets/agegroup/senior",
-
-    }
+    let [breedList,setBreedList]=useState([]);
+    let [breed,setBreed]=useState("");
+    let [age,setAge]=useState("");
+    console.log(props)
     useEffect(()=>{
         let loaded=true;
         let x=async ()=>{
-            if(urlDict[age]){
-                try{
-                    let z=await axios.get(urlDict[age]);
-                    console.log(z);
-                    if(loaded)setPets(z.data);
+            try{
+                let pls=await axios.get(`http://localhost:8080/pets/${props.spec}`);
+                let bls=await axios.get(`http://localhost:8080/breeds/species/${props.spec}`);
+                console.log(pls);
+                console.log(bls);
+                if(loaded){
+                    setPets(pls.data);
+                    setBreedList(bls.data)
+                    setBreed("");
                 }
-                catch(e){
-                    console.log(e)
-                }
+            }
+            catch(e){
+                console.log(e)
             }
         }
         x();
         return ()=>{loaded=false;}
-    },[age])
+    },[props.spec])
     let AgeSelect=(e)=>{
         console.log(e.target.value);
         setAge(e.target.value);
@@ -74,11 +74,24 @@ export default (props)=>{
                         <option value="senior">Senior</option>
                     </select>
                 </div>
+                <div className={classes.formEle}>
+                    <label htmlFor="breed">Breed</label>
+                    <select onChange={(e)=>setBreed(e.target.value)} value={breed}>
+                        <option value="">--------</option>
+                        {breedList.map((br,i)=>(
+                            <option key={i} value={br.name}>{br.name}</option>
+                        )
+                        )}
+                    </select>
+                </div>
             </div>
             <h1 style={{margin:"15px"}}>Adopt Me Please</h1>
             <div className={classes.showdiv}>
             {
-            pets.map((pet,i)=>
+            pets
+            .filter(pet=>age===""||pet.ageGroup.name.toLowerCase()===age)
+            .filter(pet=> breed===""||(pet.breedPrimary&&pet.breedPrimary.name===breed)||(pet.breedSecondary&&pet.breedSecondary.name===breed))
+            .map((pet,i)=>
                 <Pet key={i} pet={pet}/>
             )}
             </div>

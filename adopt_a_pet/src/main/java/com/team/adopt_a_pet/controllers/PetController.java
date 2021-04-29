@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -122,13 +123,13 @@ public class PetController {
 		return petServ.getAllPets();
 	}
 	
-	//Get All Pets
-	@RequestMapping("/pets/all")
-	public List<Pet> getPets(){
-		return petServ.getAllPets();
-	}
+//	//Get All Pets
+//	@RequestMapping("/pets/all")
+//	public List<Pet> getPets(){
+//		return petServ.getAllPets();
+//	}
 	//Get Specific Pet By ID
-	@RequestMapping("/pets/{pid}")
+	@RequestMapping("/pets/show/{pid}")
 	public Pet getPets(@PathVariable Long pid){
 		Pet x=petServ.getPet(pid);
 		System.out.println(x);
@@ -141,16 +142,22 @@ public class PetController {
 		return thisAgeGroup.getPets();
 	}
 	//Get All Pets of a Specific Species
-	@RequestMapping("/pets/species/{spec}")
+	@GetMapping("/pets/{spec}")
 	public List<Pet> getAllPetsOfSpecies(@PathVariable String spec){
-		Species thisSpecies = speciesServ.getSpecificSpecies(spec);
-		return thisSpecies.getPets();
+		List<Pet> s=new ArrayList<>();
+		if(spec.equals("all")) {
+			s=petServ.getAllPets();
+		}
+		else {
+			s=petServ.getPetsBySpeciesName(spec);
+		}
+		return s;
 	}
 	
 	//Get All Breeds of a Specific Species
-	@RequestMapping("/breeds/species/{sp_id}")
-	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
-		return breedServ.getBreedsOfSpecies(sp_id);
+	@RequestMapping("/breeds/species/{sp_name}")
+	public List<Breed> getBreedsBySpecies(@PathVariable String sp_name){
+		return breedServ.getBreedsOfSpecies(sp_name);
 	}
 	//Create new Pet
 	@PostMapping("/pets/new")
