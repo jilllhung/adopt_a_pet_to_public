@@ -137,12 +137,12 @@ public class PetController {
 		if(!res.hasErrors()) {
 			x=petServ.createPet(p);
 			x=petServ.getPet(x.getId());
-			System.out.println(x);
+//			System.out.println(x);
 		}
 		else {
 			System.out.println("Error");
 			System.out.println(res.getAllErrors());
-			System.out.println(p);
+//			System.out.println(p);
 		}
 		return x;
 	}
