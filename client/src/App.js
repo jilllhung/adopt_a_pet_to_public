@@ -13,7 +13,7 @@ function App() {
         <h1>Website Name</h1>
       </header>
       <div style={{display: "flex", marginLeft : "200px", marginTop : "75px"}}>
-        <button path="" type="button" class="btn btn-primary" style={{margin : "10px"}}>Find a Dog</button>
+        <button path="/pets/name/" type="button" class="btn btn-primary" style={{margin : "10px"}}>Find a Dog</button>
         <button type="button" class="btn btn-primary" style={{margin : "10px"}}>Find a Cat</button>
         <button type="button" class="btn btn-primary" style={{margin : "10px"}}>Do you know of a pet that needs a new home?</button>
       </div>
