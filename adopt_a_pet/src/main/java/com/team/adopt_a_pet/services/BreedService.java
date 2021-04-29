@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.adopt_a_pet.models.Breed;
+import com.team.adopt_a_pet.models.Species;
 import com.team.adopt_a_pet.repositories.BreedRepository;
 
 @Service
@@ -34,17 +35,28 @@ public class BreedService {
 	
 	//Add dummy breeds manually
 	public void addDummyBreeds() {
+		Species s1=new Species();
+		s1.setId((long)1);
+		Species s2=new Species();
+		s2.setId((long)2);
 		Breed breed1 = new Breed();
 		breed1.setName("Domestic Short Hair");
+		breed1.setSpecies(s2);
 		breedRepo.save(breed1);
 		Breed breed2 = new Breed();
 		breed2.setName("Domestic Long Hair");
+		breed2.setSpecies(s2);
 		breedRepo.save(breed2);
 		Breed breed3 = new Breed();
 		breed3.setName("Golden Retriever");
+		breed3.setSpecies(s1);
 		breedRepo.save(breed3);
 		Breed breed4 = new Breed();
 		breed4.setName("Corgy");
+		breed4.setSpecies(s1);
 		breedRepo.save(breed4);
+	}
+	public List<Breed> getBreedsOfSpecies(Species s) {
+		return breedRepo.findBySpecies(s);
 	}
 }

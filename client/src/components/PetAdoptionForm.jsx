@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { navigate } from '@reach/router';
 import {Link} from '@reach/router';
-import { Checkbox } from '@material-ui/core';
 
 export default() => {
     //const [selectedFile, setSelectedFile] = useState(null);
@@ -23,10 +22,48 @@ export default() => {
     const [breedString, setBreedString] = useState('');
     const [isBreedMixed, setIsBreedMixed] = useState(true);
     const [coatLength, setCoatLength] = useState('');
-    const [pictureThumbnailUrl, setPictureThumbnailUrl] = useState(null);
+    const [pictureThumbnailUrl, setPictureThumbnailUrl] = useState("");
     const [sizeGroup, setSizeGroup] = useState('');
     const [species, setSpecies] = useState('Dog');
     const[errors, setErrors] = useState([]);
+    const [breedsList, setBreedsList]=useState([]);
+    
+    // let catDict={
+    //     "Breed":"Breed",
+    //     "Husky":"Husky",
+    //     "Corgi":"Corgi",
+    //     "Golden Retriever":"Golden Retriever",
+    //     "Labrador":"Labrador",
+    //     "Rottweiler":"Rottweiler"
+    // }
+    // let dogDict={
+    //     "Breed":"Breed",
+    //     "Persian":"Persian",
+    //     "Norwegian Forest Cat":"Norwegian Forest Cat",
+    //     "Golden Retriever":"Golden Retriever",
+    //     "Labrador":"Labrador",
+    //     "Rottweiler":"Rottweiler"
+    // }
+
+    useEffect(()=>{
+        let loaded=true;
+        let x=async ()=>{
+            try{
+                let z=await axios.get("http://localhost:8080/breeds/species/"+SpeciesKey[species]);//grabs the dog or the cat key and grabs the value of that key(1 or 2) 
+                console.log(z);
+                if(loaded){
+                    setBreedsList(z.data);
+                    setPrimaryBreed("");
+                    setSecondaryBreed("");
+                }
+            }
+            catch(e){
+                console.log(e)
+            }
+        }
+        x();
+        return ()=>{loaded=false;}
+    },[species])
 
     const ageKey={
         "Young": "1",
@@ -37,12 +74,6 @@ export default() => {
     const SpeciesKey={
         "Dog":"1",
         "Cat":"2"
-    }
-
-    const BreedKey={
-        "":null,
-        "Golden Retriever":"3",
-        "Corgy":"4",
     }
 
     const CreatePet = e => {
@@ -56,7 +87,7 @@ export default() => {
                 "id":SpeciesKey[species]
             }),
             "breedPrimary":(primaryBreed===""?null:{
-                "id":BreedKey[primaryBreed]
+                "id":primaryBreed,
             }),
             ownerName,
             name,
@@ -111,6 +142,26 @@ export default() => {
                   <option value="Dog">Dog</option>
                   <option value="Cat">Cat</option>
                 </select>
+                <p>Mixed Breed(Optional): </p>
+                <input type="Checkbox" onChange={(e) => setIsBreedMixed(e.target.checked)} checked={isBreedMixed} id=""/>
+                <p>Primary Breed(Optional): </p>
+                <select onChange={(e) => setPrimaryBreed(e.target.value)} value={primaryBreed} id="">
+                    <option value="">----------------------------------</option>
+                    {
+                        breedsList.map((br,i)=>(
+                            <option key={i} value={`${br.id}`}>{br.name}</option>
+                        ))
+                    }
+                </select>
+                <p>Secondary Breed(Optional): </p>
+                <select onChange={(e) => setSecondaryBreed(e.target.value)} value={secondaryBreed} id="">
+                    <option value="">----------------------------------</option>
+                    {
+                        breedsList.map((br,i)=>(
+                            <option key={i} value={`${br.id}`}>{br.name}</option>
+                        ))
+                    }
+                </select>
                 <p>Add a photo: </p>
                 {/* <input type="file" value={ pictureThumbnailUrl } onChange = {(e) =>setPictureThumbnailUrl(e.target.value)}/> */}
                 <input type="text" value={ pictureThumbnailUrl } onChange = {(e) =>setPictureThumbnailUrl(e.target.value)}/>
@@ -141,20 +192,6 @@ export default() => {
                 </select>
                 <p>Postal Code: </p>
                 <input type="text" value={ postalCode } onChange = {(e) =>setPostalCode(e.target.value)}/>
-                <p>Mixed Breed(Optional): </p>
-                <input type="Checkbox" onChange={(e) => setIsBreedMixed(e.target.checked)} checked={isBreedMixed} id=""/>
-                <p>Primary Breed(Optional): </p>
-                <select onChange={(e) => setPrimaryBreed(e.target.value)} value={primaryBreed} id="">
-                    <option value=""></option>
-                    <option value="Golden Retriever">Golden Retriever</option>
-                    <option value="Corgy">Corgy</option>
-                </select>
-                <p>Secondary Breed(Optional): </p>
-                <select onChange={(e) => setSecondaryBreed(e.target.value)} value={secondaryBreed} id="">
-                    <option value=""></option>
-                    <option value="Golden Retriever">Golden Retriever</option>
-                    <option value="Corgy">Corgy</option>
-                </select>
                 <p>Coat Length: </p>
                 <select onChange={(e) => setCoatLength(e.target.value)} value={coatLength} id="">
                     <option value="Short">Short</option>

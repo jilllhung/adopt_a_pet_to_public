@@ -93,6 +93,16 @@ public class PetController {
 		return petServ.getAllPets();
 	}
 	
+	@RequestMapping("/dummy/all")
+	public List<Pet> createDummiesToDataBase() {
+		orgServ.addDummyOrg();
+		speciesServ.addDummySpecies();
+		ageGroupServ.addDummyAgeGroups();
+		breedServ.addDummyBreeds();
+		petServ.dummyPetToDataBase();
+		return petServ.getAllPets();
+	}
+	
 	//Get All Pets
 	@RequestMapping("/pets/all")
 	public List<Pet> getPets(){
@@ -111,9 +121,14 @@ public class PetController {
 		AgeGroup thisAgeGroup = ageGroupServ.getAgeGroupByName(age);
 		return thisAgeGroup.getPets();
 	}
+	//Get All Breeds of a Specific Species
+	@RequestMapping("/breeds/species/{sp_id}")
+	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
+		return breedServ.getBreedsOfSpecies(sp_id);
+	}
 	//Create new Pet
 	@PostMapping("/pets/new")
-	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{
+	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{//Pet p is information from submitted pet form
 		Pet x=mkPet(p);
 		x=petServ.getPet(x.getId());
 		return x;
@@ -124,18 +139,19 @@ public class PetController {
 		binder.setValidator(validator);
 		binder.validate();
 		BindingResult res=binder.getBindingResult();
-		if(!res.hasErrors()) {
-			x=petServ.createPet(p);
+		if(!res.hasErrors()) { //below trying to figure out why data that is coming back is null
+			x=petServ.saveAndFlushPet(p);
 			x=petServ.getPet(x.getId());
-			System.out.println(x);
+//			System.out.println(x);
 		}
 		else {
 			System.out.println("Error");
 			System.out.println(res.getAllErrors());
-			System.out.println(p);
+//			System.out.println(p);
 		}
 		return x;
 	}
+	
 //    @RequestMapping("/getPets")
 //    public String getPets() {
 //    	try {
