@@ -62,6 +62,9 @@ public class BreedService {
 		return breedRepo.findBySpecies(s);
 	}
 	
+	public Breed getBreedByName(String name) {
+		return breedRepo.findByName(name);
+	}
 //	//parse json string from rescue api for breed
 //	public void parseBreed(String breeds) {
 ////		String breeds = "{\r\n"

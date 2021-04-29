@@ -166,7 +166,10 @@ public class PetController {
 		binder.setValidator(validator);
 		binder.validate();
 		BindingResult res=binder.getBindingResult();
-		if(!res.hasErrors()) { //below trying to figure out why data that is coming back is null
+		String n=b.getName();
+		Breed y=breedServ.getBreedByName(n);
+		boolean z=((y!=null)||b.getSpecies().getId()!=y.getSpecies().getId());
+		if(!res.hasErrors()&&y==null) { //below trying to figure out why data that is coming back is null
 			x=breedServ.createBreed(b);
 //			x=petServ.getPet(x.getId());
 //				System.out.println(x);
@@ -180,7 +183,12 @@ public class PetController {
 	}
 	
 	@RequestMapping("/breeds/load")
-	public Boolean loadBreed(){
+	public Boolean loadBreeds() {
+		loadCatBreed();
+		loadDogBreed();
+		return true;
+	}
+	public Boolean loadCatBreed(){
 		try {
 			String urlString="https://api.rescuegroups.org/v5/public/animals/breeds/search/cats/";
 			URL url = new URL(urlString);
@@ -226,7 +234,62 @@ public class PetController {
 			requestResults=content.toString();
 			String tArr=requestResults.split("\"},\"data\":")[1];
 			System.out.println(tArr);
-			parseBreed(tArr);
+			parseBreed(tArr,(long)2);
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	public Boolean loadDogBreed(){
+		try {
+			String urlString="https://api.rescuegroups.org/v5/public/animals/breeds/search/dogs/";
+			URL url = new URL(urlString);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("Content-Type", "application/json");
+			con.setRequestProperty("Authorization", APIKey);
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(5000);
+			con.setInstanceFollowRedirects(false);
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer content = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+			    content.append(inputLine);
+			}
+			String requestResults=content.toString();
+			System.out.println(requestResults);
+			in.close();
+			con.disconnect();
+			Pattern pattern = Pattern.compile("\"count\":[0-9]+");
+			Matcher matcher = pattern.matcher(requestResults);
+			String limit="";
+			if (matcher.find()) {
+				limit=matcher.group(0);
+			}
+			limit=limit.split(":")[1];
+			
+			urlString="https://api.rescuegroups.org/v5/public/animals/breeds/search/dogs/?limit="+limit;
+			url=new URL(urlString);
+			con=(HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("Content-Type", "application/json");
+			con.setRequestProperty("Authorization", APIKey);
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(5000);
+			con.setInstanceFollowRedirects(false);
+			in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			content = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+			    content.append(inputLine);
+			}
+			requestResults=content.toString();
+			String tArr=requestResults.split("\"},\"data\":")[1];
+			System.out.println(tArr);
+			parseBreed(tArr,(long)1);
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -234,7 +297,7 @@ public class PetController {
 		return true;
 	}
 	//parse json string from rescue api for breed
-	public void parseBreed(String breeds) {
+	public void parseBreed(String breeds,Long sp_id) {
 //		String breeds = "{\r\n"
 //				+ "    \"meta\": {\r\n"
 //				+ "        \"count\": 77,\r\n"
@@ -262,7 +325,7 @@ public class PetController {
 		String[] arrayBreed = breeds.split("name\":\"");
 		System.out.println(arrayBreed.length);
 		int indexOfFirstQuote = 0;
-		Species s=speciesServ.getSpecies((long)2);
+		Species s=speciesServ.getSpecies(sp_id);
 		for(int i=1; i<arrayBreed.length; i++) {
 			indexOfFirstQuote = arrayBreed[i].indexOf('"');
 			arrayBreed[i] = arrayBreed[i].substring(0, indexOfFirstQuote);
