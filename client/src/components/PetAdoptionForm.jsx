@@ -22,28 +22,28 @@ export default() => {
     const [breedString, setBreedString] = useState('');
     const [isBreedMixed, setIsBreedMixed] = useState(true);
     const [coatLength, setCoatLength] = useState('');
-    const [pictureThumbnailUrl, setPictureThumbnailUrl] = useState(null);
+    const [pictureThumbnailUrl, setPictureThumbnailUrl] = useState("");
     const [sizeGroup, setSizeGroup] = useState('');
     const [species, setSpecies] = useState('Dog');
     const[errors, setErrors] = useState([]);
     const [breedsList, setBreedsList]=useState([]);
     
-    let catDict={
-        "Breed":"Breed",
-        "Husky":"Husky",
-        "Corgi":"Corgi",
-        "Golden Retriever":"Golden Retriever",
-        "Labrador":"Labrador",
-        "Rottweiler":"Rottweiler"
-    }
-    let dogDict={
-        "Breed":"Breed",
-        "Persian":"Persian",
-        "Norwegian Forest Cat":"Norwegian Forest Cat",
-        "Golden Retriever":"Golden Retriever",
-        "Labrador":"Labrador",
-        "Rottweiler":"Rottweiler"
-    }
+    // let catDict={
+    //     "Breed":"Breed",
+    //     "Husky":"Husky",
+    //     "Corgi":"Corgi",
+    //     "Golden Retriever":"Golden Retriever",
+    //     "Labrador":"Labrador",
+    //     "Rottweiler":"Rottweiler"
+    // }
+    // let dogDict={
+    //     "Breed":"Breed",
+    //     "Persian":"Persian",
+    //     "Norwegian Forest Cat":"Norwegian Forest Cat",
+    //     "Golden Retriever":"Golden Retriever",
+    //     "Labrador":"Labrador",
+    //     "Rottweiler":"Rottweiler"
+    // }
 
     useEffect(()=>{
         let loaded=true;
@@ -64,10 +64,6 @@ export default() => {
         x();
         return ()=>{loaded=false;}
     },[species])
-    let speciesSelect=(e)=>{
-        console.log(e.target.value);
-        setSpecies(e.target.value);
-    }
 
     const ageKey={
         "Young": "1",
@@ -78,12 +74,6 @@ export default() => {
     const SpeciesKey={
         "Dog":"1",
         "Cat":"2"
-    }
-
-    const BreedKey={
-        "":null,
-        "Golden Retriever":"3",
-        "Corgy":"4",
     }
 
     const CreatePet = e => {
@@ -97,7 +87,7 @@ export default() => {
                 "id":SpeciesKey[species]
             }),
             "breedPrimary":(primaryBreed===""?null:{
-                "id":BreedKey[primaryBreed]
+                "id":primaryBreed,
             }),
             ownerName,
             name,
@@ -159,7 +149,7 @@ export default() => {
                     <option value="">----------------------------------</option>
                     {
                         breedsList.map((br,i)=>(
-                            <option key={i} value="br.id">{br.name}</option>
+                            <option key={i} value={`${br.id}`}>{br.name}</option>
                         ))
                     }
                 </select>
@@ -168,7 +158,7 @@ export default() => {
                     <option value="">----------------------------------</option>
                     {
                         breedsList.map((br,i)=>(
-                            <option key={i} value="br.id">{br.name}</option>
+                            <option key={i} value={`${br.id}`}>{br.name}</option>
                         ))
                     }
                 </select>
