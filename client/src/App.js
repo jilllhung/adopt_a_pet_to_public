@@ -4,9 +4,10 @@ import {Router} from '@reach/router';
 import ShowPet from './components/ShowPet';
 import PetAdoptionForm from './components/PetAdoptionForm';
 import Home from './components/Home';
+import { useState } from 'react';
 
 function App() {
-const [spec, setSpec] = useState("all");
+  const [spec, setSpec] = useState("all");
   return (
     <div className="App" style={{width : "970px", margin : "0px auto", outline : "dotted red 2px"}}>
       <header style={{width : "970px", height : "50px", color : "red"}}>
