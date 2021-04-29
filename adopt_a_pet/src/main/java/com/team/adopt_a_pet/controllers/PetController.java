@@ -140,6 +140,13 @@ public class PetController {
 		AgeGroup thisAgeGroup = ageGroupServ.getAgeGroupByName(age);
 		return thisAgeGroup.getPets();
 	}
+	//Get All Pets of a Specific Species
+	@RequestMapping("/pets/species/{spec}")
+	public List<Pet> getAllPetsOfSpecies(@PathVariable String spec){
+		Species thisSpecies = speciesServ.getSpecificSpecies(spec);
+		return thisSpecies.getPets();
+	}
+	
 	//Get All Breeds of a Specific Species
 	@RequestMapping("/breeds/species/{sp_id}")
 	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
@@ -345,7 +352,7 @@ public class PetController {
 						  System.out.println(r.statusCode());
 					      return Mono.just("Error response");
 					  } else {
-					      return r.createException()
+						  return r.createException()
 					        .flatMap(Mono::error);
 					  }
 		});
