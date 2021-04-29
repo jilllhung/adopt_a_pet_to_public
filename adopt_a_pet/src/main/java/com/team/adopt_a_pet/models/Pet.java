@@ -16,8 +16,18 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.team.adopt_a_pet.valiations.ContactValues;
+
 @Entity
 @Table(name = "pets")
+@ContactValues.List({
+	@ContactValues(
+		field1 = "organization",
+		field2 = "number",
+		field3 = "email",
+		message = "At least some contact info is needed"
+	)
+})
 public class Pet {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
