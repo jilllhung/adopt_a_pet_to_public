@@ -141,7 +141,7 @@ public class PetController {
 		return thisAgeGroup.getPets();
 	}
 	//Get All Pets of a Specific Species
-	@RequestMapping("/pets/species/{spec}")
+	@RequestMapping("/pets/{spec}")
 	public List<Pet> getAllPetsOfSpecies(@PathVariable String spec){
 		Species thisSpecies = speciesServ.getSpecificSpecies(spec);
 		return thisSpecies.getPets();
