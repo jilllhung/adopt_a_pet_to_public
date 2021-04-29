@@ -49,7 +49,7 @@ export default() => {
         let loaded=true;
         let x=async ()=>{
             try{
-                let z=await axios.get("http://localhost:8080/breeds/species/"+SpeciesKey[species]);
+                let z=await axios.get("http://localhost:8080/breeds/species/"+SpeciesKey[species]);//grabs the dog or the cat key and grabs the value of that key(1 or 2) 
                 console.log(z);
                 if(loaded){
                     setBreedsList(z.data);
@@ -158,7 +158,7 @@ export default() => {
                 <select onChange={(e) => setPrimaryBreed(e.target.value)} value={primaryBreed} id="">
                     <option value="">----------------------------------</option>
                     {
-                        breedsList.map((br,i)=>(
+                        breedsList.map((br,i)=>( //goes through entire list of breeds (dogs or cats)
                             <option key={i} value="br.id">{br.name}</option>
                         ))
                     }
