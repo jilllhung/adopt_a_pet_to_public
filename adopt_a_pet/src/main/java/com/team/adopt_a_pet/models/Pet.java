@@ -14,8 +14,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -24,6 +22,9 @@ public class Pet {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	private String ownerName;
+	private String email;
+	private String number;
 	@NotBlank
 	private String name;
 	private String description;
@@ -110,9 +111,35 @@ public class Pet {
     }
     
     //Getters and Setters
+    
+    
 	public Long getId() {
 		return id;
 	}
+	public String getOwnerName() {
+		return ownerName;
+	}
+
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
