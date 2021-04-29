@@ -22,10 +22,10 @@ public class Pet {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	@NotBlank
 	private String ownerName;
 	private String email;
 	private String number;
+	@NotBlank
 	private String name;
 	private String description;
 	private Double longitude;
@@ -50,7 +50,7 @@ public class Pet {
     @JoinColumn(name="breedsecondary_id")
     private Breed breedSecondary;
 //    "breedPrimaryId": 24,
-    private Boolean isBreedMixed;
+    //private Boolean isBreedMixed;
     private String coatLength;
     private String descriptionText;
 //    private Integer pictureCount;
@@ -215,12 +215,12 @@ public class Pet {
 	public void setBreedPrimary(Breed breedPrimary) {
 		this.breedPrimary = breedPrimary;
 	}
-	public Boolean getIsBreedMixed() {
-		return isBreedMixed;
-	}
-	public void setIsBreedMixed(Boolean isBreedMixed) {
-		this.isBreedMixed = isBreedMixed;
-	}
+//	public Boolean getIsBreedMixed() {
+//		return isBreedMixed;
+//	}
+//	public void setIsBreedMixed(Boolean isBreedMixed) {
+//		this.isBreedMixed = isBreedMixed;
+//	}
 	public String getCoatLength() {
 		return coatLength;
 	}
