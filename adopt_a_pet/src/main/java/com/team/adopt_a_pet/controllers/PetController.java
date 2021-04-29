@@ -121,6 +121,11 @@ public class PetController {
 		AgeGroup thisAgeGroup = ageGroupServ.getAgeGroupByName(age);
 		return thisAgeGroup.getPets();
 	}
+	//Get All Breeds of a Specific Species
+	@RequestMapping("/breeds/species/{sp_id}")
+	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
+		return breedServ.getBreedsOfSpecies(sp_id);
+	}
 	//Create new Pet
 	@PostMapping("/pets/new")
 	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{//Pet p is information from submitted pet form
@@ -135,7 +140,7 @@ public class PetController {
 		binder.validate();
 		BindingResult res=binder.getBindingResult();
 		if(!res.hasErrors()) { //below trying to figure out why data that is coming back is null
-			x=petServ.createPet(p);
+			x=petServ.saveAndFlushPet(p);
 			x=petServ.getPet(x.getId());
 //			System.out.println(x);
 		}
@@ -147,10 +152,6 @@ public class PetController {
 		return x;
 	}
 	
-	@RequestMapping("/breeds/species/{sp_id}")
-	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
-		return breedServ.getBreedsOfSpecies(sp_id);
-	}
 //    @RequestMapping("/getPets")
 //    public String getPets() {
 //    	try {
