@@ -18,7 +18,7 @@ function App() {
         <button type="button" class="btn btn-primary" style={{margin : "10px"}}>Do you know of a pet that needs a new home?</button>
       </div>
       <Router>
-        <Home path="/"/>
+        <Home path="/pet/species/{spec}"/>
         <ShowPet path="/animals/:id"/>
         <PetList path="/animals" default/>
         <PetAdoptionForm path="/animal_form"/>
