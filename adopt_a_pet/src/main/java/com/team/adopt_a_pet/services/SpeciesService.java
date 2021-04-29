@@ -22,6 +22,14 @@ public class SpeciesService {
 	public List<Species> getAllSpeciess(){
 		return speciesRepo.findAll();
 	}
+	
+	//retrieves specific species by name 
+	public Species getSpecificSpecies(String name){
+		return speciesRepo.findByName(name);
+	}
+	
+	
+	
 	//retrieve a species
 	public Species getSpecies(Long id) {
 		Optional<Species> optionalSpecies = speciesRepo.findById(id);

@@ -10,4 +10,5 @@ import com.team.adopt_a_pet.models.Species;
 @Repository
 public interface SpeciesRepository extends CrudRepository<Species, Long>{
 	List<Species> findAll();
+	Species findByName(String name);
 }
