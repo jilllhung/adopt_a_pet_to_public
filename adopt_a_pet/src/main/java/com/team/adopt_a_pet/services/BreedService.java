@@ -62,47 +62,43 @@ public class BreedService {
 		return breedRepo.findBySpecies(s);
 	}
 	
-	//parse json string from rescue api for breed
-	public void parseBreed(String breeds) {
-//		String breeds = "{\r\n"
-//				+ "    \"meta\": {\r\n"
-//				+ "        \"count\": 77,\r\n"
-//				+ "        \"countReturned\": 77,\r\n"
-//				+ "        \"pageReturned\": 1,\r\n"
-//				+ "        \"pages\": 1,\r\n"
-//				+ "        \"limit\": 77,\r\n"
-//				+ "        \"transactionId\": \"yfopMRiAUDFr\"\r\n"
-//				+ "    },\r\n"
-//				+ "    \"data\": [\r\n"
-//				+ "        {\r\n"
-//				+ "            \"type\": \"breeds\",\r\n"
-//				+ "            \"id\": \"1\",\r\n"
-//				+ "            \"attributes\": {\r\n"
-//				+ "                \"name\": \"Abyssinian\"\r\n"
-//				+ "            }\r\n"
-//				+ "        },\r\n"
-//				+ "        {\r\n"
-//				+ "            \"type\": \"breeds\",\r\n"
-//				+ "            \"id\": \"2\",\r\n"
-//				+ "            \"attributes\": {\r\n"
-//				+ "                \"name\": \"American Curl\"\r\n"
-//				+ "            }\r\n"
-//				+ "        },";
-		String[] arrayBreed = breeds.split("name\":\"");
-		System.out.println(arrayBreed.length);
-//		List<String> rawBreeds = new ArrayList<String>();
-//		rawBreeds = Arrays.asList(arrayBreed);
-		int indexOfFirstQuote = 0;
-		for(int i=1; i<arrayBreed.length; i++) {
-			indexOfFirstQuote = arrayBreed[i].indexOf('"');
-			arrayBreed[i] = arrayBreed[i].substring(0, indexOfFirstQuote);
-			System.out.println(arrayBreed[i]);
-			//add to database
-//			Breed toBeAdded = new Breed(arrayBreed[i]);
-//			this.createBreed(toBeAdded);
-		}
+//	//parse json string from rescue api for breed
+//	public void parseBreed(String breeds) {
+////		String breeds = "{\r\n"
+////				+ "    \"meta\": {\r\n"
+////				+ "        \"count\": 77,\r\n"
+////				+ "        \"countReturned\": 77,\r\n"
+////				+ "        \"pageReturned\": 1,\r\n"
+////				+ "        \"pages\": 1,\r\n"
+////				+ "        \"limit\": 77,\r\n"
+////				+ "        \"transactionId\": \"yfopMRiAUDFr\"\r\n"
+////				+ "    },\r\n"
+////				+ "    \"data\": [\r\n"
+////				+ "        {\r\n"
+////				+ "            \"type\": \"breeds\",\r\n"
+////				+ "            \"id\": \"1\",\r\n"
+////				+ "            \"attributes\": {\r\n"
+////				+ "                \"name\": \"Abyssinian\"\r\n"
+////				+ "            }\r\n"
+////				+ "        },\r\n"
+////				+ "        {\r\n"
+////				+ "            \"type\": \"breeds\",\r\n"
+////				+ "            \"id\": \"2\",\r\n"
+////				+ "            \"attributes\": {\r\n"
+////				+ "                \"name\": \"American Curl\"\r\n"
+////				+ "            }\r\n"
+////				+ "        },";
+//		String[] arrayBreed = breeds.split("name\":\"");
+//		System.out.println(arrayBreed.length);
+//		int indexOfFirstQuote = 0;
 //		for(int i=1; i<arrayBreed.length; i++) {
+//			indexOfFirstQuote = arrayBreed[i].indexOf('"');
+//			arrayBreed[i] = arrayBreed[i].substring(0, indexOfFirstQuote);
 //			System.out.println(arrayBreed[i]);
+//			//add to database
+//			Breed toBeAdded = new Breed(arrayBreed[i]);
+//			toBeAdded.setSpecies(2);
+//			this.createBreed(toBeAdded);
 //		}
-	}
+//	}
 }
