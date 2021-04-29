@@ -208,6 +208,7 @@ public class PetController {
 				limit=matcher.group(0);
 			}
 			limit=limit.split(":")[1];
+			
 			urlString="https://api.rescuegroups.org/v5/public/animals/breeds/search/cats/?limit="+limit;
 			url=new URL(urlString);
 			con=(HttpURLConnection) url.openConnection();
@@ -223,12 +224,54 @@ public class PetController {
 			    content.append(inputLine);
 			}
 			requestResults=content.toString();
-			System.out.println(requestResults);
+			String tArr=requestResults.split("\"},\"data\":")[1];
+			System.out.println(tArr);
+			parseBreed(tArr);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return true;
+	}
+	//parse json string from rescue api for breed
+	public void parseBreed(String breeds) {
+//		String breeds = "{\r\n"
+//				+ "    \"meta\": {\r\n"
+//				+ "        \"count\": 77,\r\n"
+//				+ "        \"countReturned\": 77,\r\n"
+//				+ "        \"pageReturned\": 1,\r\n"
+//				+ "        \"pages\": 1,\r\n"
+//				+ "        \"limit\": 77,\r\n"
+//				+ "        \"transactionId\": \"yfopMRiAUDFr\"\r\n"
+//				+ "    },\r\n"
+//				+ "    \"data\": [\r\n"
+//				+ "        {\r\n"
+//				+ "            \"type\": \"breeds\",\r\n"
+//				+ "            \"id\": \"1\",\r\n"
+//				+ "            \"attributes\": {\r\n"
+//				+ "                \"name\": \"Abyssinian\"\r\n"
+//				+ "            }\r\n"
+//				+ "        },\r\n"
+//				+ "        {\r\n"
+//				+ "            \"type\": \"breeds\",\r\n"
+//				+ "            \"id\": \"2\",\r\n"
+//				+ "            \"attributes\": {\r\n"
+//				+ "                \"name\": \"American Curl\"\r\n"
+//				+ "            }\r\n"
+//				+ "        },";
+		String[] arrayBreed = breeds.split("name\":\"");
+		System.out.println(arrayBreed.length);
+		int indexOfFirstQuote = 0;
+		Species s=speciesServ.getSpecies((long)2);
+		for(int i=1; i<arrayBreed.length; i++) {
+			indexOfFirstQuote = arrayBreed[i].indexOf('"');
+			arrayBreed[i] = arrayBreed[i].substring(0, indexOfFirstQuote);
+			System.out.println(arrayBreed[i]);
+//			//add to database
+			Breed toBeAdded = new Breed(arrayBreed[i]);
+			toBeAdded.setSpecies(s);
+			mkBreed(toBeAdded);
+		}
 	}
 	
 //    @RequestMapping("/getPets")
