@@ -93,6 +93,16 @@ public class PetController {
 		return petServ.getAllPets();
 	}
 	
+	@RequestMapping("/dummy/all")
+	public List<Pet> createDummiesToDataBase() {
+		orgServ.addDummyOrg();
+		speciesServ.addDummySpecies();
+		ageGroupServ.addDummyAgeGroups();
+		breedServ.addDummyBreeds();
+		petServ.dummyPetToDataBase();
+		return petServ.getAllPets();
+	}
+	
 	//Get All Pets
 	@RequestMapping("/pets/all")
 	public List<Pet> getPets(){
@@ -135,6 +145,11 @@ public class PetController {
 			System.out.println(p);
 		}
 		return x;
+	}
+	
+	@RequestMapping("/breeds/species/{sp_id}")
+	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
+		return breedServ.getBreedsOfSpecies(sp_id);
 	}
 //    @RequestMapping("/getPets")
 //    public String getPets() {

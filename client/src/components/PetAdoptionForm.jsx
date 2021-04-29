@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { navigate } from '@reach/router';
 import {Link} from '@reach/router';
-import { Checkbox } from '@material-ui/core';
 
 export default() => {
     //const [selectedFile, setSelectedFile] = useState(null);
@@ -27,6 +26,7 @@ export default() => {
     const [sizeGroup, setSizeGroup] = useState('');
     const [species, setSpecies] = useState('Dog');
     const[errors, setErrors] = useState([]);
+    const [breedsList, setBreedsList]=useState([]);
     
     let catDict={
         "Breed":"Breed",
@@ -48,15 +48,17 @@ export default() => {
     useEffect(()=>{
         let loaded=true;
         let x=async ()=>{
-            if(Dict[species]){
-                try{
-                    let z=await axios.get(urlDict[species]);
-                    console.log(z);
-                    if(loaded)setPets(z.data);
+            try{
+                let z=await axios.get("http://localhost:8080/breeds/species/"+SpeciesKey[species]);
+                console.log(z);
+                if(loaded){
+                    setBreedsList(z.data);
+                    setPrimaryBreed("");
+                    setSecondaryBreed("");
                 }
-                catch(e){
-                    console.log(e)
-                }
+            }
+            catch(e){
+                console.log(e)
             }
         }
         x();
@@ -65,6 +67,7 @@ export default() => {
     let speciesSelect=(e)=>{
         console.log(e.target.value);
         setSpecies(e.target.value);
+    }
 
     const ageKey={
         "Young": "1",
@@ -149,6 +152,26 @@ export default() => {
                   <option value="Dog">Dog</option>
                   <option value="Cat">Cat</option>
                 </select>
+                <p>Mixed Breed(Optional): </p>
+                <input type="Checkbox" onChange={(e) => setIsBreedMixed(e.target.checked)} checked={isBreedMixed} id=""/>
+                <p>Primary Breed(Optional): </p>
+                <select onChange={(e) => setPrimaryBreed(e.target.value)} value={primaryBreed} id="">
+                    <option value="">----------------------------------</option>
+                    {
+                        breedsList.map((br,i)=>(
+                            <option key={i} value="br.id">{br.name}</option>
+                        ))
+                    }
+                </select>
+                <p>Secondary Breed(Optional): </p>
+                <select onChange={(e) => setSecondaryBreed(e.target.value)} value={secondaryBreed} id="">
+                    <option value="">----------------------------------</option>
+                    {
+                        breedsList.map((br,i)=>(
+                            <option key={i} value="br.id">{br.name}</option>
+                        ))
+                    }
+                </select>
                 <p>Add a photo: </p>
                 {/* <input type="file" value={ pictureThumbnailUrl } onChange = {(e) =>setPictureThumbnailUrl(e.target.value)}/> */}
                 <input type="text" value={ pictureThumbnailUrl } onChange = {(e) =>setPictureThumbnailUrl(e.target.value)}/>
@@ -179,20 +202,6 @@ export default() => {
                 </select>
                 <p>Postal Code: </p>
                 <input type="text" value={ postalCode } onChange = {(e) =>setPostalCode(e.target.value)}/>
-                <p>Mixed Breed(Optional): </p>
-                <input type="Checkbox" onChange={(e) => setIsBreedMixed(e.target.checked)} checked={isBreedMixed} id=""/>
-                <p>Primary Breed(Optional): </p>
-                <select onChange={(e) => setPrimaryBreed(e.target.value)} value={primaryBreed} id="">
-                    <option value=""></option>
-                    <option value="Golden Retriever">Golden Retriever</option>
-                    <option value="Corgy">Corgy</option>
-                </select>
-                <p>Secondary Breed(Optional): </p>
-                <select onChange={(e) => setSecondaryBreed(e.target.value)} value={secondaryBreed} id="">
-                    <option value=""></option>
-                    <option value="Golden Retriever">Golden Retriever</option>
-                    <option value="Corgy">Corgy</option>
-                </select>
                 <p>Coat Length: </p>
                 <select onChange={(e) => setCoatLength(e.target.value)} value={coatLength} id="">
                     <option value="Short">Short</option>

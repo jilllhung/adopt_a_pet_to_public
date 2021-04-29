@@ -9,10 +9,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,8 +28,13 @@ public class Breed {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	@NotNull
+	@NotBlank
 	private String name;
+	
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name="species_id")
+	private Species species;
 	
 	@JsonIgnore
     @OneToMany(mappedBy="breedPrimary", fetch = FetchType.LAZY)
@@ -53,9 +61,24 @@ public class Breed {
     protected void onUpdate(){
     	this.updatedAt = new Date();
     }
+    
+    @Override
+    public boolean equals(Object o) {
+    	if(o == null) return false;
+    	if(o == this) return true;
+    	if(o instanceof Breed) {
+    		Breed b = (Breed) o;
+    		return b.getName().equals(this.name) && b.getSpecies().equals(this.species);
+    	}
+    	return false;
+    }
+    @Override
+    public int hashCode() {
+    	return name.hashCode() * species.hashCode();
+    }
     @Override
     public String toString() {
-    	return "Breed{id: "+id+"|name: "+name+"}";
+    	return String.format("Breed{id: %d|name: %s|species: %s}", id, name, species.toString());
     }
     
     //Empty Constructor
@@ -86,6 +109,12 @@ public class Breed {
 	}
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+	public Species getSpecies() {
+		return species;
+	}
+	public void setSpecies(Species species) {
+		this.species = species;
 	}
 	public List<Pet> getPrimaryBreedPets() {
 		return primaryBreedPets;
