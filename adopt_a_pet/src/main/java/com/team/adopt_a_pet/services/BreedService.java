@@ -56,4 +56,7 @@ public class BreedService {
 		breed4.setSpecies(s1);
 		breedRepo.save(breed4);
 	}
+	public List<Breed> getBreedsOfSpecies(Species s) {
+		return breedRepo.findBySpecies(s);
+	}
 }

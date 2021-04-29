@@ -146,6 +146,11 @@ public class PetController {
 		}
 		return x;
 	}
+	
+	@RequestMapping("/breeds/species/{sp_id}")
+	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
+		return breedServ.getBreedsOfSpecies(sp_id);
+	}
 //    @RequestMapping("/getPets")
 //    public String getPets() {
 //    	try {
