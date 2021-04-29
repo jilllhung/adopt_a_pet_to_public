@@ -16,16 +16,16 @@ const useStyles = makeStyles({
     form: {
         margin: "auto",
         display:"flex",
-        justifyContent:"space-between",
+        justifyContent:"center",
         gap:"15px",
         padding:"15px",
+        // border:"red dotted 1px"
     },
     formEle: {
-        margin: "auto",
         display:"flex",
-        justifyContent:"space-between",
         gap:"15px",
         padding:"15px",
+        // border:"red dotted 1px"
     },
 
 });
@@ -33,14 +33,23 @@ const useStyles = makeStyles({
 export default (props)=>{
     const classes = useStyles();
     let [pets,setPets]=useState([]);
+    let [breedList,setBreedList]=useState([]);
+    let [breed,setBreed]=useState("");
     let [age,setAge]=useState("");
+    console.log(props)
     useEffect(()=>{
         let loaded=true;
         let x=async ()=>{
             try{
-                let z=await axios.get(`http://localhost:8080/pets/${props.spec}`);
-                console.log(z);
-                if(loaded)setPets(z.data);
+                let pls=await axios.get(`http://localhost:8080/pets/${props.spec}`);
+                let bls=await axios.get(`http://localhost:8080/breeds/species/${props.spec}`);
+                console.log(pls);
+                console.log(bls);
+                if(loaded){
+                    setPets(pls.data);
+                    setBreedList(bls.data)
+                    setBreed("");
+                }
             }
             catch(e){
                 console.log(e)
@@ -65,12 +74,23 @@ export default (props)=>{
                         <option value="senior">Senior</option>
                     </select>
                 </div>
+                <div className={classes.formEle}>
+                    <label htmlFor="breed">Breed</label>
+                    <select onChange={(e)=>setBreed(e.target.value)} value={breed}>
+                        <option value="">--------</option>
+                        {breedList.map((br,i)=>(
+                            <option key={i} value={br.name}>{br.name}</option>
+                        )
+                        )}
+                    </select>
+                </div>
             </div>
             <h1 style={{margin:"15px"}}>Adopt Me Please</h1>
             <div className={classes.showdiv}>
             {
             pets
             .filter(pet=>age===""||pet.ageGroup.name.toLowerCase()===age)
+            .filter(pet=> breed===""||(pet.breedPrimary&&pet.breedPrimary.name===breed)||(pet.breedSecondary&&pet.breedSecondary.name===breed))
             .map((pet,i)=>
                 <Pet key={i} pet={pet}/>
             )}
