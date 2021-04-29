@@ -223,7 +223,7 @@ public class PetController {
 			    content.append(inputLine);
 			}
 			requestResults=content.toString();
-			System.out.println(requestResults);
+			System.out.println(requestResults.split("\"},\"data\":")[1]);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
