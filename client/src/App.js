@@ -6,7 +6,7 @@ import PetAdoptionForm from './components/PetAdoptionForm';
 import Home from './components/Home';
 
 function App() {
-[spec, setSpec] = useState("all");
+const [spec, setSpec] = useState("all");
   return (
     <div className="App" style={{width : "970px", margin : "0px auto", outline : "dotted red 2px"}}>
       <header style={{width : "970px", height : "50px", color : "red"}}>
