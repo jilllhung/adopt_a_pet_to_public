@@ -27,6 +27,44 @@ export default() => {
     const [sizeGroup, setSizeGroup] = useState('');
     const [species, setSpecies] = useState('Dog');
     const[errors, setErrors] = useState([]);
+    
+    let catDict={
+        "Breed":"Breed",
+        "Husky":"Husky",
+        "Corgi":"Corgi",
+        "Golden Retriever":"Golden Retriever",
+        "Labrador":"Labrador",
+        "Rottweiler":"Rottweiler"
+    }
+    let dogDict={
+        "Breed":"Breed",
+        "Persian":"Persian",
+        "Norwegian Forest Cat":"Norwegian Forest Cat",
+        "Golden Retriever":"Golden Retriever",
+        "Labrador":"Labrador",
+        "Rottweiler":"Rottweiler"
+    }
+
+    useEffect(()=>{
+        let loaded=true;
+        let x=async ()=>{
+            if(Dict[species]){
+                try{
+                    let z=await axios.get(urlDict[species]);
+                    console.log(z);
+                    if(loaded)setPets(z.data);
+                }
+                catch(e){
+                    console.log(e)
+                }
+            }
+        }
+        x();
+        return ()=>{loaded=false;}
+    },[species])
+    let speciesSelect=(e)=>{
+        console.log(e.target.value);
+        setSpecies(e.target.value);
 
     const ageKey={
         "Young": "1",
