@@ -60,7 +60,7 @@ export default (props)=>{
         }
         x();
         return ()=>{loaded=false;}
-    },[age])
+    },[age,props.spec])
     let AgeSelect=(e)=>{
         console.log(e.target.value);
         setAge(e.target.value);

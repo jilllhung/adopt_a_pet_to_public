@@ -15,7 +15,7 @@ export default (props)=>{
     let [pet,setPet]=useState({});
     let x=async ()=>{
         try{
-            let z=await axios.get(`http://localhost:8080/pets/${props.id}`);
+            let z=await axios.get(`http://localhost:8080/pets/show/${props.id}`);
             console.log(z);
             setPet(z.data);
         }
