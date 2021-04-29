@@ -35,13 +35,13 @@ const useStyles = makeStyles({
 export default (props)=>{
     const classes = useStyles();
     let btnAct=()=>{
-        navigate(`/animals/${props.pet.id}`);
+        navigate(`/animals/show/${props.pet.id}`);
     }
     return(
         // <div className="pet">
         //     <p>{props.pet.name}</p>
         // </div>
-        <Card className={classes.root} variant="outlined">
+        <Card className={classes.root} variant="outlined" onClick={btnAct}>
             <CardContent>
                 <Typography className={classes.title} color="textSecondary" gutterBottom>
                 Looking for a good home

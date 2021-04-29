@@ -9,4 +9,5 @@ import com.team.adopt_a_pet.models.Pet;
 
 public interface PetRepository extends JpaRepository<Pet, Long>{
 	List<Pet> findAll();
+	List<Pet> findBySpecies_Name(String speciesName);
 }
