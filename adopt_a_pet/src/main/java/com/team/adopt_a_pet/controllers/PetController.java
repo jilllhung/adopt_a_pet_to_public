@@ -1,8 +1,15 @@
 package com.team.adopt_a_pet.controllers;
 
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.naming.Binding;
 import javax.validation.Valid;
@@ -121,21 +128,27 @@ public class PetController {
 		AgeGroup thisAgeGroup = ageGroupServ.getAgeGroupByName(age);
 		return thisAgeGroup.getPets();
 	}
+	//Get All Breeds of a Specific Species
+	@RequestMapping("/breeds/species/{sp_id}")
+	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
+		return breedServ.getBreedsOfSpecies(sp_id);
+	}
 	//Create new Pet
 	@PostMapping("/pets/new")
-	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{
+	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{//Pet p is information from submitted pet form
 		Pet x=mkPet(p);
 		x=petServ.getPet(x.getId());
 		return x;
 	}
+	//inspectPetandCreate
 	public Pet mkPet(Pet p){
 		Pet x=null;
 		DataBinder binder=new DataBinder(p);
 		binder.setValidator(validator);
 		binder.validate();
 		BindingResult res=binder.getBindingResult();
-		if(!res.hasErrors()) {
-			x=petServ.createPet(p);
+		if(!res.hasErrors()) { //below trying to figure out why data that is coming back is null
+			x=petServ.saveAndFlushPet(p);
 			x=petServ.getPet(x.getId());
 //			System.out.println(x);
 		}
@@ -146,11 +159,78 @@ public class PetController {
 		}
 		return x;
 	}
-	
-	@RequestMapping("/breeds/species/{sp_id}")
-	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
-		return breedServ.getBreedsOfSpecies(sp_id);
+	//inspectBreedandCreate
+	public Breed mkBreed(Breed b){
+		Breed x=null;
+		DataBinder binder=new DataBinder(b);
+		binder.setValidator(validator);
+		binder.validate();
+		BindingResult res=binder.getBindingResult();
+		if(!res.hasErrors()) { //below trying to figure out why data that is coming back is null
+			x=breedServ.createBreed(b);
+//			x=petServ.getPet(x.getId());
+//				System.out.println(x);
+		}
+		else {
+			System.out.println("Error");
+			System.out.println(res.getAllErrors());
+//				System.out.println(p);
+		}
+		return x;
 	}
+	
+	@RequestMapping("/breeds/load")
+	public Boolean loadBreed(){
+		try {
+			String urlString="https://api.rescuegroups.org/v5/public/animals/breeds/search/cats/";
+			URL url = new URL(urlString);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("Content-Type", "application/json");
+			con.setRequestProperty("Authorization", APIKey);
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(5000);
+			con.setInstanceFollowRedirects(false);
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer content = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+			    content.append(inputLine);
+			}
+			String requestResults=content.toString();
+			System.out.println(requestResults);
+			in.close();
+			con.disconnect();
+			Pattern pattern = Pattern.compile("\"count\":[0-9]+");
+			Matcher matcher = pattern.matcher(requestResults);
+			String limit="";
+			if (matcher.find()) {
+				limit=matcher.group(0);
+			}
+			limit=limit.split(":")[1];
+			urlString="https://api.rescuegroups.org/v5/public/animals/breeds/search/cats/?limit="+limit;
+			url=new URL(urlString);
+			con=(HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("Content-Type", "application/json");
+			con.setRequestProperty("Authorization", APIKey);
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(5000);
+			con.setInstanceFollowRedirects(false);
+			in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			content = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+			    content.append(inputLine);
+			}
+			requestResults=content.toString();
+			System.out.println(requestResults);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
 //    @RequestMapping("/getPets")
 //    public String getPets() {
 //    	try {
