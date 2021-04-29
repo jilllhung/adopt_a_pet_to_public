@@ -61,6 +61,9 @@ public class BreedService {
 	public List<Breed> getBreedsOfSpecies(Species s) {
 		return breedRepo.findBySpecies(s);
 	}
+	public List<Breed> getBreedsOfSpecies(String s) {
+		return breedRepo.findBySpecies_NameIgnoreCase(s);
+	}
 	
 	public Breed getBreedByNameAndSpecies(String name,Species s) {
 		return breedRepo.findByNameAndSpecies(name,s);

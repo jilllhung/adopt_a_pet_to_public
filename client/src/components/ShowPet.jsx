@@ -11,6 +11,7 @@ const useStyles = makeStyles({
   });
 
 export default (props)=>{
+    console.log(props)
     const classes = useStyles();
     let [pet,setPet]=useState({});
     let x=async ()=>{

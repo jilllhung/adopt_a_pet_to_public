@@ -155,9 +155,9 @@ public class PetController {
 	}
 	
 	//Get All Breeds of a Specific Species
-	@RequestMapping("/breeds/species/{sp_id}")
-	public List<Breed> getBreedsBySpecies(@PathVariable Species sp_id){
-		return breedServ.getBreedsOfSpecies(sp_id);
+	@RequestMapping("/breeds/species/{sp_name}")
+	public List<Breed> getBreedsBySpecies(@PathVariable String sp_name){
+		return breedServ.getBreedsOfSpecies(sp_name);
 	}
 	//Create new Pet
 	@PostMapping("/pets/new")
