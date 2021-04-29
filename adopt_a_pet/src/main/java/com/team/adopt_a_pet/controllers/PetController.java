@@ -168,8 +168,8 @@ public class PetController {
 		BindingResult res=binder.getBindingResult();
 		String n=b.getName();
 		Breed y=breedServ.getBreedByName(n);
-		boolean z=((y!=null)||b.getSpecies().getId()!=y.getSpecies().getId());
-		if(!res.hasErrors()&&y==null) { //below trying to figure out why data that is coming back is null
+		boolean z=((y==null)||b.getSpecies().getId()!=y.getSpecies().getId());
+		if(!res.hasErrors()&&z) { //below trying to figure out why data that is coming back is null
 			x=breedServ.createBreed(b);
 //			x=petServ.getPet(x.getId());
 //				System.out.println(x);
