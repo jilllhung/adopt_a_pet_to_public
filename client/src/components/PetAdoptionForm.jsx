@@ -49,7 +49,7 @@ export default() => {
         let loaded=true;
         let x=async ()=>{
             try{
-                let z=await axios.get("http://localhost:8080/breeds/species/"+SpeciesKey[species]);
+                let z=await axios.get("http://localhost:8080/breeds/species/"+SpeciesKey[species]);//grabs the dog or the cat key and grabs the value of that key(1 or 2) 
                 console.log(z);
                 if(loaded){
                     setBreedsList(z.data);
