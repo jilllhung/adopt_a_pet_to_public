@@ -22,10 +22,10 @@ public class Pet {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	@NotBlank
 	private String ownerName;
 	private String email;
 	private String number;
+	@NotBlank
 	private String name;
 	private String description;
 	private Double longitude;
