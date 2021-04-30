@@ -28,6 +28,7 @@ const useStyles = makeStyles({
         width: "50vw",
     },
     individualPic: {
+        marginTop:"15px",
         width: "15vw",
     },
     listHead: {
