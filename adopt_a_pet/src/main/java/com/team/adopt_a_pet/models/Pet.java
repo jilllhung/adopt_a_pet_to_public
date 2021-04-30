@@ -2,6 +2,7 @@ package com.team.adopt_a_pet.models;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -16,8 +18,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.team.adopt_a_pet.valiations.ContactValues;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "pets")
 @ContactValues.List({
@@ -38,6 +44,9 @@ public class Pet {
 	private String number;
 	@NotBlank
 	private String name;
+	@Lob
+	@Basic(fetch = FetchType.EAGER)
+	@Column(name="description", length=1024)
 	private String description;
 	private Double longitude;
 	private Double latitude;
@@ -47,7 +56,7 @@ public class Pet {
     // Many To One Relationship w/ AgeGroup
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="agegroup_id")
-    private AgeGroup ageGroup;
+    private AgeGroup ageGrp;
     private String ageString;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthDate;
@@ -63,7 +72,7 @@ public class Pet {
 //    "breedPrimaryId": 24,
     private Boolean isBreedMixed;
     private String coatLength;
-    private String descriptionText;
+//    private String descriptionText;
 //    private Integer pictureCount;
     private String pictureThumbnailUrl;
     private String rescueId;
@@ -90,7 +99,7 @@ public class Pet {
     
     @Override
     public String toString() {
-    	return "Pet{id: "+id+"|Rescue Id: "+rescueId+"|name: "+name+"|Species: "+species+"|AgeGroup: "+ageGroup+"|BreedP: "+breedPrimary+"|Org: "+organization+"}";
+    	return "Pet{id: "+id+"|Rescue Id: "+rescueId+"|name: "+name+"|Species: "+species+"|AgeGroup: "+ageGrp+"|BreedP: "+breedPrimary+"|Org: "+organization+"}";
     }
     
     //runs the method(get dates) right before the object is created
@@ -220,9 +229,11 @@ public class Pet {
 	public void setBreedString(String breedString) {
 		this.breedString = breedString;
 	}
+	@JsonProperty
 	public Breed getBreedPrimary() {
 		return breedPrimary;
 	}
+	@JsonIgnore
 	public void setBreedPrimary(Breed breedPrimary) {
 		this.breedPrimary = breedPrimary;
 	}
@@ -238,12 +249,12 @@ public class Pet {
 	public void setCoatLength(String coatLength) {
 		this.coatLength = coatLength;
 	}
-	public String getDescriptionText() {
-		return descriptionText;
-	}
-	public void setDescriptionText(String descriptionText) {
-		this.descriptionText = descriptionText;
-	}
+//	public String getDescriptionText() {
+//		return descriptionText;
+//	}
+//	public void setDescriptionText(String descriptionText) {
+//		this.descriptionText = descriptionText;
+//	}
 	public String getPictureThumbnailUrl() {
 		return pictureThumbnailUrl;
 	}
@@ -292,27 +303,33 @@ public class Pet {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	public AgeGroup getAgeGroup() {
-		return ageGroup;
+	public AgeGroup getAgeGrp() {
+		return ageGrp;
 	}
-	public void setAgeGroup(AgeGroup ageGroup) {
-		this.ageGroup = ageGroup;
+	public void setAgeGrp(AgeGroup ageGrp) {
+		this.ageGrp = ageGrp;
 	}
+	@JsonProperty
 	public Breed getBreedSecondary() {
 		return breedSecondary;
 	}
+	@JsonIgnore
 	public void setBreedSecondary(Breed breedSecondary) {
 		this.breedSecondary = breedSecondary;
 	}
+	@JsonProperty
 	public Organization getOrganization() {
 		return organization;
 	}
+	@JsonIgnore
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
 	}
+	@JsonProperty
 	public Species getSpecies() {
 		return species;
 	}
+	@JsonIgnore
 	public void setSpecies(Species species) {
 		this.species = species;
 	}
