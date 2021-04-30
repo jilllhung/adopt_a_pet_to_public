@@ -50,7 +50,7 @@ const Pet = (props) => {
 				{pet.pictureThumbnailUrl && (
 					<img
 						src={pet.pictureThumbnailUrl}
-						alt='{pet.name}'
+						alt={`${pet.name}`}
 						className={classes.img}
 					/>
 				)}
@@ -66,7 +66,7 @@ const Pet = (props) => {
 							Age group
 						</Typography>
 						<Typography variant='body2' component='p'>
-							{pet.ageGroup.name}
+							{pet.ageGrp?pet.ageGrp.name:"Unknown"}
 						</Typography>
 					</>
 				)}
@@ -79,8 +79,8 @@ const Pet = (props) => {
 							Location
 						</Typography>
 						<Typography variant='body2' component='p'>
-							{pet.city.length ? pet.city : ""},{" "}
-							{pet.state.length ? pet.state : ""}
+							{(pet.city&&pet.city.length) ? pet.city : ""},{" "}
+							{(pet.state&&pet.state.length) ? pet.state : ""}
 						</Typography>
 					</>
 				)}
@@ -95,3 +95,4 @@ const Pet = (props) => {
 };
 
 export default Pet;
+

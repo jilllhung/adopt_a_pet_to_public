@@ -78,7 +78,7 @@ public class Breed {
     }
     @Override
     public String toString() {
-    	return String.format("Breed{id: %d|name: %s|species: %s}", id, name, species.toString());
+    	return String.format("Breed{id: "+id+"|name: "+name+"|species: "+species+"}");
     }
     
     //Empty Constructor

@@ -72,6 +72,7 @@ const PetList = (props) => {
 					<label htmlFor='ageGroup'>Age Group</label>
 					<select onChange={AgeSelect} value={age}>
 						<option value=''>--------</option>
+            <option value="baby">Baby</option>
 						<option value='young'>Young</option>
 						<option value='adult'>Adult</option>
 						<option value='senior'>Senior</option>
@@ -97,8 +98,8 @@ const PetList = (props) => {
 				{pets
 					.filter(
 						(pet) =>
-							age === "" ||
-							pet.ageGroup.name.toLowerCase() === age
+							pet=>age===""||
+              (pet.ageGrp&&pet.ageGrp.name.toLowerCase()===age)
 					)
 					.filter(
 						(pet) =>
@@ -117,3 +118,4 @@ const PetList = (props) => {
 };
 
 export default PetList;
+
