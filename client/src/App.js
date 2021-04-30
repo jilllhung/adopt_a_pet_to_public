@@ -42,7 +42,10 @@ function App() {
     },
     app:{
       minHeight:"100vh",
-      backgroundColor : "#EDEDED",
+      // backgroundColor : "#EDEDED",
+      backgroundImage:"linear-gradient(to bottom,rgba(237, 237 , 237 , 0.85) 0%, rgba(237, 237 , 237 , 0.85) 100%), url(http://localhost:8080/img/bkg.png)",
+      backgroundPosition: "center",
+      backgroundSize: "200px",
       minWidth:"970px",
     },
     selectedTab:{
