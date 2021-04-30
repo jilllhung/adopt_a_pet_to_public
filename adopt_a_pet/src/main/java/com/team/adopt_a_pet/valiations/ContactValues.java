@@ -13,6 +13,7 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ContactValues{
 	String message() default "The Fields are Missing";
+	String field() default "FieldName";
 	String field1();
 	String field2();
 	String field3();
