@@ -13,4 +13,5 @@ public interface BreedRepository extends CrudRepository<Breed, Long> {
 	List<Breed> findAll();
 	List<Breed> findBySpecies(Species species);
 	Breed findByNameAndSpecies(String name, Species species);
+	List<Breed> findBySpecies_NameIgnoreCase(String s);
 }

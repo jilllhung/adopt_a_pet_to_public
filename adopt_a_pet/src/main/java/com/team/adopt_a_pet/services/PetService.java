@@ -52,5 +52,8 @@ public class PetService {
 	public void deletePet(Long id) {
 		petRepo.deleteById(id);
 	}
+	public List<Pet> getPetsBySpeciesName(String speciesName) {
+		return petRepo.findBySpecies_Name(speciesName);
+	}
 	
 }

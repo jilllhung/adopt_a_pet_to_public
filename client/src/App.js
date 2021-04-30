@@ -1,6 +1,6 @@
 import './App.css';
 import PetList from './components/PetList';
-import {Router} from '@reach/router';
+import {navigate, Router} from '@reach/router';
 import ShowPet from './components/ShowPet';
 import PetAdoptionForm from './components/PetAdoptionForm';
 import Home from './components/Home';
@@ -11,7 +11,6 @@ import Button from '@material-ui/core/Button';
 import PetsIcon from '@material-ui/icons/Pets';
 
 function App() {
-  const [spec, setSpec] = useState("all");
 
   const useStyles = makeStyles({
     root: {
@@ -39,13 +38,19 @@ function App() {
         <Button classes={{
         root: classes.root, // class name, e.g. `classes-nesting-root-x`
         label: classes.label // class name, e.g. `classes-nesting-label-x`
-        }} type="button" style={{margin : "20px", height : "100px", width : "150px"}} onClick={(e) => setSpec("dog")}>Find a Dog
+        }} type="button" style={{margin : "20px", height : "100px", width : "150px"}} onClick={(e) => {navigate("/animals/dog")}}>Find a Dog
         </Button>
 
         <Button classes={{
         root: classes.root, // class name, e.g. `classes-nesting-root-x`
         label: classes.label // class name, e.g. `classes-nesting-label-x`
-        }}  style={{margin : "20px", height : "100px", width : "150px"}} onClick={(e) => setSpec("cat")}>Find a Cat
+        }}  style={{margin : "20px", height : "100px", width : "150px"}} onClick={(e) =>{navigate("/animals/cat");}}>Find a Cat
+        </Button>
+
+        <Button classes={{
+        root: classes.root, // class name, e.g. `classes-nesting-root-x`
+        label: classes.label // class name, e.g. `classes-nesting-label-x`
+        }}  style={{margin : "20px", height : "100px", width : "150px"}} onClick={(e) =>{navigate("/animals/all");}}>Find All
         </Button>
 
         <Button classes={{
