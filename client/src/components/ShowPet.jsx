@@ -35,13 +35,13 @@ export default (props)=>{
             Age group
             </h4>
             <p>
-                {pet.ageGroup?pet.ageGroup.name:""}
+                {pet.ageGrp?pet.ageGrp.name:"Unknown"}
             </p>
             <h4>
                 Location
             </h4>
             <p>
-                {pet.city}, {pet.state}
+                {`${pet.city},${pet.state}`}
             </p>
         </div>
     )

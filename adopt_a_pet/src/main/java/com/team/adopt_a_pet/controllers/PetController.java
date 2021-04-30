@@ -562,6 +562,7 @@ public Pet mkPet(Pet p) throws BadRequestException{
 				name = root.path("data");
 				JsonNode includedMess = root.path("included");
 				//Map out org, species w/ their ids
+				Species Other = speciesServ.getSpecificSpecies("other");
 				HashMap<String, Organization> orgMap = new HashMap<>();
 				HashMap<String, Species> speciesMap = new HashMap<>();
 				for(JsonNode include: includedMess) {
@@ -569,7 +570,30 @@ public Pet mkPet(Pet p) throws BadRequestException{
 					JsonNode att = include.path("attributes");
 					if(include.path("type").asText().equals("orgs")) {
 						Organization foundOrg = orgServ.getOrganization(att.path("name").asText(), att.path("postalcode").asText());
-						System.out.println(foundOrg);
+//						System.out.println(foundOrg);
+						if(foundOrg==null) {
+//							System.out.println(att.path("name").asText());
+							String LAS=att.path("lat").asText();
+							String LOS=att.path("lon").asText();
+							if(LAS.charAt(0)=='-')
+								LAS=LAS.substring(0, 8);
+							else
+								LAS=LAS.substring(0, 7);
+							if(LOS.charAt(0)=='-')
+								LOS=LOS.substring(0, 8);
+							else
+								LOS=LOS.substring(0, 7);
+//							System.out.println(LAS);
+//							System.out.println(LOS);
+//							System.out.println(orgServ.getOrganization((long)6).getLat());
+//							System.out.println(orgServ.getOrganization((long)6).getLon());
+							foundOrg = orgServ.getOrganization(att.path("name").asText(), Double.parseDouble(LAS), Double.parseDouble(LOS) );
+//							System.out.println(foundOrg);
+						}
+						if(foundOrg==null) {
+							foundOrg = orgServ.getOrganization(att.path("name").asText(),att.path("city").asText(),att.path("state").asText(),att.path("url").asText());
+//							System.out.println(foundOrg);
+						}
 						orgMap.put(key, foundOrg);
 					}else { //"species"
 						Species foundSp = speciesServ.getSpecificSpecies(att.path("singular").asText().toLowerCase());
@@ -579,25 +603,45 @@ public Pet mkPet(Pet p) throws BadRequestException{
 				for (JsonNode s : name) {
 //					System.out.println(s);
 					Pet newPet = Layer1.convertValue(s.get("attributes"), Pet.class);
+					System.out.println(newPet);
+					newPet.setDescription(s.path("attributes").path("descriptionText").asText());
+					if (newPet.getDescription() != null) {
+						newPet.setDescription(s.path("attributes").path("descriptionHtml").asText());
+					}
 					//Set Relationships
 					//AgeGroup
 					String age = s.path("attributes").path("ageGroup").asText();
 					AgeGroup thisAge = ageGroupServ.getAgeGroupByName(age);
-//					System.out.println(thisAge);
-					newPet.setAgeGroup(thisAge);
+					System.out.println(age);
+					System.out.println(thisAge);
+					newPet.setAgeGrp(thisAge);
 //					System.out.println(s.path("relationships").path("orgs").path("data").path(0));
 					String orgAPIid = s.path("relationships").path("orgs").path("data").path(0).path("id").asText();
 					String speciesAPIid = s.path("relationships").path("species").path("data").path(0).path("id").asText();
 //					System.out.println(orgAPIid);
 //					System.out.println(orgMap.get(orgAPIid));
 					newPet.setOrganization(orgMap.get(orgAPIid));
+					newPet.setLatitude(orgMap.get(orgAPIid).getLat());
+					newPet.setLongitude(orgMap.get(orgAPIid).getLon());
+					newPet.setPostalCode(orgMap.get(orgAPIid).getPostalcode());
+					newPet.setCity(orgMap.get(orgAPIid).getCity());
+					newPet.setState(orgMap.get(orgAPIid).getState().toUpperCase());
 					newPet.setSpecies(speciesMap.get(speciesAPIid));
+					if(newPet.getSpecies()==null) {
+						newPet.setSpecies(Other);
+					}
+					System.out.println(newPet.getSpecies());
 					newPet.setBreedPrimary(breedServ.getBreedByNameAndSpecies(s.path("attributes").path("breedPrimary").asText(), speciesMap.get(speciesAPIid)));
 					if (s.path("attributes").path("breedSecondary") != null) {
 						newPet.setBreedSecondary(breedServ.getBreedByNameAndSpecies(s.path("attributes").path("breedSecondary").asText(), speciesMap.get(speciesAPIid)));
 					}
-//					System.out.println(newPet);
-//					mkOrg(newOrg);
+					System.out.println(newPet);
+					try {
+						mkPet(newPet);
+					}
+					catch (Exception e) {
+						System.out.println("Bad Data");
+					}
 				}
 			}
 		} catch (JsonProcessingException e) {

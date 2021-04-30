@@ -11,4 +11,6 @@ import com.team.adopt_a_pet.models.Organization;
 public interface OrganizationRepository extends CrudRepository<Organization, Long> {
 	List<Organization> findAll();
 	Organization findByNameAndPostalcode(String name, String postalcode);
+	Organization findByLatAndLonAndName(Double lat, Double lon, String name);
+	Organization findByNameAndCityAndStateAndUrl(String name, String city, String state, String url);
 }
