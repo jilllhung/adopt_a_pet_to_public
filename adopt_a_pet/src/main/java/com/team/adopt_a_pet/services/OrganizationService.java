@@ -31,6 +31,14 @@ public class OrganizationService {
 	public Organization getOrganization(String name, String postalcode) {
 		return organizationRepo.findByNameAndPostalcode(name, postalcode);
 	}
+	//retrieve a organization by name and lon and lat
+		public Organization getOrganization(String name, Double lat, Double lon) {
+			return organizationRepo.findByLatAndLonAndName(lat, lon, name);
+		}
+	//retrieve a organization by name, city, state, email, and url
+	public Organization getOrganization(String name, String city, String state, String url) {
+		return organizationRepo.findByNameAndCityAndStateAndUrl(name, city, state, url);
+	}
 	
 	//delete a organization
 	public void deleteOrganization(Long id) {
