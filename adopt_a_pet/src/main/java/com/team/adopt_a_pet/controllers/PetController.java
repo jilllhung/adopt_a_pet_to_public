@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.naming.Binding;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +40,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team.adopt_a_pet.Exceptions.BadRequestException;
 import com.team.adopt_a_pet.models.AgeGroup;
 import com.team.adopt_a_pet.models.Breed;
 import com.team.adopt_a_pet.models.Organization;
@@ -161,12 +164,15 @@ public class PetController {
 	}
 	//Create new Pet
 	@PostMapping("/pets/new")
-	public Pet createPet(@RequestBody Pet p) throws ResponseStatusException{//Pet p is information from submitted pet form
+	public Pet createPet(@RequestBody Pet p,HttpServletResponse response) throws BadRequestException {
 		Pet x=mkPet(p);
+//		if(x instanceof Pet)
+//			return (Pet)x;
+//		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		return x;
 	}
 //inspectPetandCreate
-public Pet mkPet(Pet p) throws ResponseStatusException{
+public Pet mkPet(Pet p) throws BadRequestException{
     Pet x=null;
     DataBinder binder=new DataBinder(p);
     binder.setValidator(validator);
@@ -181,7 +187,14 @@ public Pet mkPet(Pet p) throws ResponseStatusException{
         System.out.println("Error");
         System.out.println(res.getAllErrors());
 //			System.out.println(p);
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Info Is Missing");
+//        ObjectMapper EMapper=new ObjectMapper();
+//        try {
+//			System.out.println(EMapper.writeValueAsString(res.getAllErrors()));
+		throw new BadRequestException(res.getAllErrors());
+//		} catch (JsonProcessingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
     }
     return x;
 }
@@ -404,6 +417,13 @@ public Pet mkPet(Pet p) throws ResponseStatusException{
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private class ErrorData extends Throwable{
+		private List<ObjectError> data=new ArrayList<>();
+		public ErrorData(List<ObjectError> errors) {
+			this.data=errors;
+		}
 	}
 	
 //    @RequestMapping("/getPets")

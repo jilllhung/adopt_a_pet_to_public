@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { navigate } from '@reach/router';
 import {Link} from '@reach/router';
+import Input from '@material-ui/core/Input';
 
 export default() => {
     //const [selectedFile, setSelectedFile] = useState(null);
@@ -133,10 +134,13 @@ export default() => {
                 <input type="text" value={ ownerName } onChange = {(e) =>setOwnerName(e.target.value)}/>
                 <p>Email: </p>
                 <input type="text" value={ email } onChange = {(e) =>setEmail(e.target.value)}/>
+                {/* <Input defaultValue="Error" error inputProps={{ 'aria-label': 'Must include either email or phone number*' }} /> */}
                 <p>Phone Number(Optional): </p>
                 <input type="text" value={ number } onChange = {(e) =>setPhoneNumber(e.target.value)}/>
+                {/* <Input defaultValue="Error" error inputProps={{ 'aria-label': 'Must include either email or phone number*' }} /> */}
                 <p>Pet Name: </p>
                 <input type="text" value={ name } onChange = {(e) =>setName(e.target.value)}/>
+                <Input defaultValue="Error" error inputProps={{ 'aria-label': 'Required*' }} />
                 <p>Species: </p>
                 <select  onChange={(e) => setSpecies(e.target.value)} value={species} id="">
                   <option value="Dog">Dog</option>

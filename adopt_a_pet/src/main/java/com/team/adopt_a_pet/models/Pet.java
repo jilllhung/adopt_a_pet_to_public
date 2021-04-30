@@ -25,7 +25,8 @@ import com.team.adopt_a_pet.valiations.ContactValues;
 		field1 = "organization",
 		field2 = "number",
 		field3 = "email",
-		message = "At least some contact info is needed"
+		message = "At least some contact info is needed",
+		field="Contact Info"
 	)
 })
 public class Pet {
