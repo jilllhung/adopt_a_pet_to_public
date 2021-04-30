@@ -16,8 +16,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.team.adopt_a_pet.valiations.ContactValues;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "pets")
 @ContactValues.List({
@@ -223,6 +226,7 @@ public class Pet {
 	public Breed getBreedPrimary() {
 		return breedPrimary;
 	}
+	@JsonIgnore
 	public void setBreedPrimary(Breed breedPrimary) {
 		this.breedPrimary = breedPrimary;
 	}
@@ -295,24 +299,28 @@ public class Pet {
 	public AgeGroup getAgeGroup() {
 		return ageGroup;
 	}
+	@JsonIgnore
 	public void setAgeGroup(AgeGroup ageGroup) {
 		this.ageGroup = ageGroup;
 	}
 	public Breed getBreedSecondary() {
 		return breedSecondary;
 	}
+	@JsonIgnore
 	public void setBreedSecondary(Breed breedSecondary) {
 		this.breedSecondary = breedSecondary;
 	}
 	public Organization getOrganization() {
 		return organization;
 	}
+	@JsonIgnore
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
 	}
 	public Species getSpecies() {
 		return species;
 	}
+	@JsonIgnore
 	public void setSpecies(Species species) {
 		this.species = species;
 	}
