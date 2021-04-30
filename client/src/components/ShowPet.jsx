@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import sanitizeHtml from 'sanitize-html';
+import SanitizedHTML from 'react-sanitized-html';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -106,7 +107,15 @@ export default (props)=>{
                         <DescriptionIcon />
                     </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={`Description: ${sanitizeHtml(pet.description)}`}/>
+                    <ListItemText>
+                        {/* {`Description: ${sanitizeHtml(pet.description)}`} */}
+                        {/* {sanitizeHtml(`<a href="http://bing.com/">Bing</a>`)} */}
+                        <SanitizedHTML
+                            allowedAttributes={{ 'a': ['href'] }}
+                            allowedTags={['a', 'br']}
+                            html={pet.description}
+                        />
+                    </ListItemText>
                 </ListItem>
                 <ListItem button>
                     <ListItemAvatar>
