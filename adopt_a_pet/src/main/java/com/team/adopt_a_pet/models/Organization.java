@@ -18,7 +18,9 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "organizations")
 public class Organization {
@@ -75,7 +77,7 @@ public class Organization {
 	public Organization() {
 		
 	}
-	
+
 	//Getters and Setters
 	public Long getId() {
 		return id;

@@ -173,6 +173,7 @@ public class PetController {
 	}
 //inspectPetandCreate
 public Pet mkPet(Pet p) throws BadRequestException{
+	//ck name, contact(email/#/org), species
     Pet x=null;
     DataBinder binder=new DataBinder(p);
     binder.setValidator(validator);
@@ -213,6 +214,29 @@ public Pet mkPet(Pet p) throws BadRequestException{
 			x=breedServ.createBreed(b);
 //			x=petServ.getPet(x.getId());
 //				System.out.println(x);
+		}
+		else {
+			System.out.println("Error");
+			System.out.println(res.getAllErrors());
+//				System.out.println(p);
+		}
+		return x;
+	}
+	
+	public Organization mkOrg(Organization org){
+		Organization x=null;
+		DataBinder binder=new DataBinder(org);
+		binder.setValidator(validator);
+		binder.validate();
+		BindingResult res=binder.getBindingResult();
+		String nofOrg=org.getName();
+		String pofOrg=org.getPostalcode();
+		Organization thisOrg = orgServ.getOrganization(nofOrg, pofOrg);
+
+		boolean z=((thisOrg==null));
+		if(!res.hasErrors()&&z) {
+			x=orgServ.createOrganization(org);
+
 		}
 		else {
 			System.out.println("Error");
@@ -419,12 +443,144 @@ public Pet mkPet(Pet p) throws BadRequestException{
 		
 	}
 	
-	private class ErrorData extends Throwable{
-		private List<ObjectError> data=new ArrayList<>();
-		public ErrorData(List<ObjectError> errors) {
-			this.data=errors;
+	@RequestMapping("/orgs/load")
+	public Boolean loadOrgs() {
+		JacksonOrganization();
+		return true;
+	}
+	public void JacksonOrganization() {
+		WebClient w=WebClient.builder()
+				.baseUrl("https://api.rescuegroups.org")
+				.defaultHeader(HttpHeaders.AUTHORIZATION, APIKey) 
+				.build();
+		UriSpec<RequestBodySpec> uriSpec = w.method(HttpMethod.GET);
+		RequestBodySpec bodySpec = uriSpec.uri("v5/public/orgs/search/?sort=orgs.distance");
+		RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue("{\"data\":{\"filters\":[],\"filterProcessing\":\"1\",\"filterRadius\":{\"miles\":20,\"postalcode\":\"98109\"}}}");
+		Mono<String> response=headersSpec.exchangeToMono(r -> {
+			  if (r.statusCode()
+					    .equals(HttpStatus.OK)) {
+					      return r.bodyToMono(String.class);
+					  } else if (r.statusCode()
+					    .is4xxClientError()) {
+						  System.out.println(r.statusCode());
+					      return Mono.just("Error response");
+					  } else {
+						  return r.createException()
+					        .flatMap(Mono::error);
+					  }
+		});
+		String body=response.block();
+		System.out.println(body);
+		ObjectMapper Layer1=new ObjectMapper();
+		JsonNode root;
+		try {
+			root=Layer1.readTree(body);
+			System.out.println(root);
+			JsonNode name=root.path("meta").path("count");
+//			System.out.println(name);
+			bodySpec = uriSpec.uri("v5/public/orgs/search/?sort=orgs.distance&limit="+name);
+			headersSpec = bodySpec.bodyValue("{\"data\":{\"filters\":[],\"filterProcessing\":\"1\",\"filterRadius\":{\"miles\":20,\"postalcode\":\"98109\"}}}");
+			response=headersSpec.exchangeToMono(r -> {
+				  if (r.statusCode()
+						    .equals(HttpStatus.OK)) {
+						      return r.bodyToMono(String.class);
+						  } else if (r.statusCode()
+						    .is4xxClientError()) {
+							  System.out.println(r.statusCode());
+						      return Mono.just("Error response");
+						  } else {
+						      return r.createException()
+						        .flatMap(Mono::error);
+						  }
+			});
+			body=response.block();
+			System.out.println(body);
+			root=Layer1.readTree(body);
+			name=root.path("data");
+			for(JsonNode s:name) {
+				Organization newOrg = Layer1.convertValue(s.get("attributes"), Organization.class);
+				System.out.println(newOrg);
+				mkOrg(newOrg);
+			}
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
+
+	
+	@RequestMapping("/pets/load")
+	public Boolean loadPets() {
+		JacksonPet();
+		return true;
+	}
+	public void JacksonPet() {
+		WebClient w=WebClient.builder()
+				.baseUrl("https://api.rescuegroups.org")
+				.defaultHeader(HttpHeaders.AUTHORIZATION, APIKey) 
+				.build();
+		UriSpec<RequestBodySpec> uriSpec = w.method(HttpMethod.GET);
+		RequestBodySpec bodySpec = uriSpec.uri("v5/public/animals/search/available?limit=15");
+		RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue("{\"data\":{\"filterRadius\":{\"miles\": 20,\"postalcode\":98109}}}");
+		Mono<String> response=headersSpec.exchangeToMono(r -> {
+			  if (r.statusCode()
+					    .equals(HttpStatus.OK)) {
+				  		  System.out.println("ok!");
+					      return r.bodyToMono(String.class);
+					  } else if (r.statusCode()
+					    .is4xxClientError()) {
+						  System.out.println(r.statusCode());
+					      return Mono.just("Error response");
+					  } else {
+						  System.out.println("esle");
+						  return r.createException()
+					        .flatMap(Mono::error);
+					  }
+		});
+		String body=response.block();
+		System.out.println(body);
+//		ObjectMapper Layer1=new ObjectMapper();
+//		JsonNode root;
+//		try {
+//			root=Layer1.readTree(body);
+//			System.out.println(root);
+//			JsonNode name=root.path("meta").path("count");
+////			System.out.println(name);
+//			bodySpec = uriSpec.uri("v5/public/orgs/search/?sort=orgs.distance&limit="+name);
+//			headersSpec = bodySpec.bodyValue("{\"data\":{\"filters\":[],\"filterProcessing\":\"1\",\"filterRadius\":{\"miles\":15,\"postalcode\":\"98109\"}}}");
+//			response=headersSpec.exchangeToMono(r -> {
+//				  if (r.statusCode()
+//						    .equals(HttpStatus.OK)) {
+//						      return r.bodyToMono(String.class);
+//						  } else if (r.statusCode()
+//						    .is4xxClientError()) {
+//							  System.out.println(r.statusCode());
+//						      return Mono.just("Error response");
+//						  } else {
+//						      return r.createException()
+//						        .flatMap(Mono::error);
+//						  }
+//			});
+//			body=response.block();
+//			System.out.println(body);
+//			root=Layer1.readTree(body);
+//			name=root.path("data");
+//			for(JsonNode s:name) {
+//				Organization newOrg = Layer1.convertValue(s.get("attributes"), Organization.class);
+//				System.out.println(newOrg);
+//				mkOrg(newOrg);
+//			}
+//		} catch (JsonProcessingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	}
+//	private class ErrorData extends Throwable{
+//		private List<ObjectError> data=new ArrayList<>();
+//		public ErrorData(List<ObjectError> errors) {
+//			this.data=errors;
+//		}
+//	}
 	
 //    @RequestMapping("/getPets")
 //    public String getPets() {
