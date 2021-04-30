@@ -3,8 +3,17 @@ import axios from 'axios';
 import { navigate } from '@reach/router';
 import {Link} from '@reach/router';
 import Input from '@material-ui/core/Input';
+import { makeStyles } from '@material-ui/core';
 
 export default() => {
+    const useStyles = makeStyles({
+        err:{
+            color:"red",
+        }
+    });
+    
+    const classes = useStyles();
+
     //const [selectedFile, setSelectedFile] = useState(null);
     const [ownerName, setOwnerName] = useState('');
     const [email, setEmail] = useState('');
@@ -116,20 +125,21 @@ export default() => {
         .catch(err=>{
             console.log(err)
             console.log('****')
-            // const errorResponse = err.response.data.errors;
+            console.log(err.response.data.data)
+            // const errorResponse = err.response.data.data;
             // const errorArr = [];
             // for(const key of Object.keys(errorResponse)){
             //     errorArr.push(errorResponse[key].message)
             // }
             // // Set Errors
-            // setErrors(errorArr);
+            setErrors(err.response.data.data);
         })
     }
     return(
-        <div style={{width : "970px", margin : "auto 0px", outline: "2px red dotted"}}>
-            <form onSubmit={ CreatePet } style={{marginLeft : "400px", marginTop : "25px"}}>
+        <div style={{width : "520px", margin : "auto"}}>
+            <form onSubmit={ CreatePet }>
                 <h2>Add a Pet: </h2>
-                {errors.map((err, index) => <p key={index}>{err}</p>)} 
+                {errors.map((err, index) => <p key={index} className={classes.err}>{(err.field?err.field:err.code)}: {err.defaultMessage}</p>)} 
                 <p>Your Name: </p>
                 <input type="text" value={ ownerName } onChange = {(e) =>setOwnerName(e.target.value)}/>
                 <p>Email: </p>
@@ -140,7 +150,7 @@ export default() => {
                 {/* <Input defaultValue="Error" error inputProps={{ 'aria-label': 'Must include either email or phone number*' }} /> */}
                 <p>Pet Name: </p>
                 <input type="text" value={ name } onChange = {(e) =>setName(e.target.value)}/>
-                <Input defaultValue="Error" error inputProps={{ 'aria-label': 'Required*' }} />
+                {/* <Input defaultValue="Error" error inputProps={{ 'aria-label': 'Required*' }} /> */}
                 <p>Species: </p>
                 <select  onChange={(e) => setSpecies(e.target.value)} value={species} id="">
                   <option value="Dog">Dog</option>
