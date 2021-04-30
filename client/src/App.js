@@ -63,7 +63,7 @@ function App() {
       <Router>
         <Home path="/" default/> 
         <ShowPet path="/animals/show/:id"/>
-        <PetList path="/animals" spec = {spec}/>
+        <PetList path="/animals" spec = "all"/>
         <PetList path="/animals/:spec"/>
         <PetAdoptionForm path="/animal_form"/>
         {/* <Test path="/test"/>  */}
