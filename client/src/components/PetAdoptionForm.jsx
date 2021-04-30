@@ -12,6 +12,7 @@ import {
 	Grid,
 	InputLabel,
 	MenuItem,
+	Paper,
 	Select,
 	TextField,
 } from "@material-ui/core";
@@ -30,17 +31,38 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/picker
 const PetAdoptionForm = () => {
 	const useStyles = makeStyles((theme) => ({
 		root: {
+			flexGrow: 1,
+			justifyContent: "center",
+			alignItems: "center",
 			"& .MuiTextField-root": {
 				margin: theme.spacing(1),
-				width: 200,
+				display: "block",
 			},
+		},
+		paper: {
+			width: "75vw",
+			padding: theme.spacing(1),
+			whiteSpace: "nowrap",
+			marginBottom: theme.spacing(2),
+		},
+		paperStacked: {
+			width: "98%",
+			padding: theme.spacing(1),
+			whiteSpace: "nowrap",
+			marginBottom: theme.spacing(2),
 		},
 		formControl: {
 			margin: theme.spacing(1),
-			minWidth: 120,
+			minWidth: "100%",
 		},
 		err: {
 			color: "red",
+		},
+		buttons: {
+			paddingTop: theme.spacing(2),
+			paddingBottom: theme.spacing(2),
+			paddingLeft: theme.spacing(5),
+			paddingRight: theme.spacing(5),
 		},
 	}));
 
@@ -62,30 +84,13 @@ const PetAdoptionForm = () => {
 	const [ageGroup, setAgeGroup] = useState("Young");
 	const [birthDate, setBirthDate] = useState(new Date());
 	const [breedString, setBreedString] = useState("");
-	const [isBreedMixed, setIsBreedMixed] = useState(true);
+	const [isBreedMixed, setIsBreedMixed] = useState(false);
 	const [coatLength, setCoatLength] = useState("");
 	const [pictureThumbnailUrl, setPictureThumbnailUrl] = useState("");
 	const [sizeGroup, setSizeGroup] = useState("");
 	const [species, setSpecies] = useState("Dog");
 	const [errors, setErrors] = useState([]);
 	const [breedsList, setBreedsList] = useState([]);
-
-	// let catDict={
-	//     "Breed":"Breed",
-	//     "Husky":"Husky",
-	//     "Corgi":"Corgi",
-	//     "Golden Retriever":"Golden Retriever",
-	//     "Labrador":"Labrador",
-	//     "Rottweiler":"Rottweiler"
-	// }
-	// let dogDict={
-	//     "Breed":"Breed",
-	//     "Persian":"Persian",
-	//     "Norwegian Forest Cat":"Norwegian Forest Cat",
-	//     "Golden Retriever":"Golden Retriever",
-	//     "Labrador":"Labrador",
-	//     "Rottweiler":"Rottweiler"
-	// }
 
 	useEffect(() => {
 		let loaded = true;
@@ -183,284 +188,307 @@ const PetAdoptionForm = () => {
 	};
 	return (
 		// <div style={{ width: "520px", margin: "auto" }}>
-		<Container fixed>
-			<MuiPickersUtilsProvider utils={DateFnsUtils}>
-				<form className={classes.root} noValidate onSubmit={CreatePet} method='post'>
-					<h2>Add a Pet: </h2>
-					{errors.map((err, index) => (
-						<p key={index} className={classes.err}>
-							{err.field ? err.field : err.code}: {err.defaultMessage}
-						</p>
-					))}
-					<Grid container justify='space-around' spacing='3'>
-						<Grid item xs={4}>
-							<TextField
-								variant='filled'
-								label='Pet Name:'
-								fullWidth
-								value={name}
-								onChange={(e) => setName(e.target.value)}
-							/>
-							{/* <TextField defaultValue="Error" error inputProps={{ 'aria-label':'Required*' }} /> */}
-						</Grid>
-						<Grid item xs={4}>
-							<FormControl variant='filled' className={classes.formControl}>
-								<InputLabel id='selectSpeciesLabel'>Species:</InputLabel>
-								<Select
-									labelId='selectSpeciesLabel'
-									fullWidth
-									value={species}
-									onChange={(e) => setSpecies(e.target.value)}>
-									<MenuItem value='Cat'>Cat</MenuItem>
-									<MenuItem value='Dog'>Dog</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={4}>
-							{/* <TextField type="file" value={ pictureThumbnailUrl } onChange = {(e) =>setPictureThumbnailUrl(e.target.value)}/> */}
-							<TextField
-								variant='filled'
-								label='Add a photo:'
-								fullWidth
-								value={pictureThumbnailUrl}
-								onChange={(e) => setPictureThumbnailUrl(e.target.value)}
-							/>
-						</Grid>
-					</Grid>
-					<Grid container justify='space-around' spacing='3'>
-						<Grid item xs={4}>
-							<FormControlLabel
-								control={
-									<Checkbox
-										color='primary'
-										checked={isBreedMixed}
-										onChange={(e) => setIsBreedMixed(e.target.checked)}
+		// <Container fixed>
+		<Grid container spacing={2} className={classes.root}>
+			<Paper className={classes.paper}>
+				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+					<form noValidate onSubmit={CreatePet} method='post'>
+						<h2>Add a Pet: </h2>
+						{errors.map((err, index) => (
+							<p key={index} className={classes.err}>
+								{err.field ? err.field : err.code}: {err.defaultMessage}
+							</p>
+						))}
+						<Paper className={classes.paperStacked}>
+							<Grid container justify='space-around' item xs={12} spacing={3}>
+								<Grid item xs={4}>
+									<TextField
+										variant='filled'
+										label='Pet Name:'
+										fullWidth
+										value={name}
+										onChange={(e) => setName(e.target.value)}
 									/>
-								}
-								label='Mixed Breed(Optional):'
-							/>
-						</Grid>
-						<Grid item xs={4}>
-							<FormControl variant='filled' className={classes.formControl}>
-								<InputLabel id='selectPrimaryBreedLabel'>
-									Primary Breed(Optional):
-								</InputLabel>
-								<Select
-									labelId='selectPrimaryBreedLabel'
-									fullWidth
-									value={primaryBreed}
-									onChange={(e) => setPrimaryBreed(e.target.value)}>
-									<MenuItem value=''>----------------------------------</MenuItem>
-									{breedsList.map((br, i) => (
-										<MenuItem key={i} value={`${br.id}`}>
-											{br.name}
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={4}>
-							<FormControl variant='filled' className={classes.formControl}>
-								<InputLabel id='selectSecondaryBreedLabel'>
-									Secondary Breed(Optional):
-								</InputLabel>
-								<Select
-									labelId='selectSecondaryBreedLabel'
-									fullWidth
-									value={secondaryBreed}
-									onChange={(e) => setSecondaryBreed(e.target.value)}>
-									<MenuItem value=''>----------------------------------</MenuItem>
-									{breedsList.map((br, i) => (
-										<MenuItem key={i} value={`${br.id}`}>
-											{br.name}
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-						</Grid>
-					</Grid>
-					<Grid container justify='space-around' spacing='3'>
-						<Grid item xs={12}>
-							<TextField
-								//style={{ width: "500px", height: "200px" }}
-								variant='filled'
-								label='Description:'
-								fullWidth
-								multiline
-								rowsMax={4}
-								value={description}
-								onChange={(e) => setDescription(e.target.value)}
-							/>
-						</Grid>
-					</Grid>
-					<Grid container justify='space-around' spacing='3'>
-						<Grid item xs={4}>
-							<FormControl variant='filled' className={classes.formControl}>
-								<InputLabel id='selectAgeGroupLabel'>
-									AgeGroup(Optional):
-								</InputLabel>
-								<Select
-									labelId='selectAgeGroupLabel'
-									fullWidth
-									value={ageGroup}
-									onChange={(e) => setAgeGroup(e.target.value)}>
-									<MenuItem value='Baby'>Baby</MenuItem>
-									<MenuItem value='Young'>Young</MenuItem>
-									<MenuItem value='Adult'>Adult</MenuItem>
-									<MenuItem value='Mature'>Mature</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								variant='filled'
-								label='Estimated Age(Optional):'
-								fullWidth
-								value={ageString}
-								onChange={(e) => setAgeString(e.target.value)}
-							/>
-						</Grid>
-						<Grid item xs={4}>
-							<KeyboardDatePicker
-								margin='normal'
-								label='Birth Date(Optional)'
-								fullWidth
-								format='MM/dd/yyyy'
-								value={birthDate}
-								onChange={(e) => setBirthDate(e.target.value)}
-								KeyboardButtonProps={{
-									"aria-label": "change date",
-								}}
-							/>
-						</Grid>
-					</Grid>
-					<Grid container justify='space-around' spacing='3'>
-						<Grid item xs={4}>
-							<FormControl variant='filled' className={classes.formControl}>
-								<InputLabel id='selectGenderLabel'>Gender:</InputLabel>
-								<Select
-									labelId='selectGenderLabel'
-									fullWidth
-									value={sex}
-									onChange={(e) => setSex(e.target.value)}>
-									<MenuItem value='Male'>Male</MenuItem>
-									<MenuItem value='Female'>Female</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={4}>
-							<FormControl variant='filled' className={classes.formControl}>
-								<InputLabel id='selectCoatLengthLabel'>Coat Length:</InputLabel>
-								<Select
-									labelId='selectCoatLengthLabel'
-									fullWidth
-									value={coatLength}
-									onChange={(e) => setCoatLength(e.target.value)}>
-									<MenuItem value='Short'>Short</MenuItem>
-									<MenuItem value='Medium'>Medium</MenuItem>
-									<MenuItem value='Long'>Long</MenuItem>
-								</Select>
-							</FormControl>
-							{/* <p>Description Text: </p>
+									{/* <TextField defaultValue="Error" error inputProps={{ 'aria-label':'Required*' }} /> */}
+								</Grid>
+								<Grid item xs={4}>
+									<FormControl variant='filled' className={classes.formControl}>
+										<InputLabel id='selectSpeciesLabel'>Species:</InputLabel>
+										<Select
+											labelId='selectSpeciesLabel'
+											// fullWidth
+											value={species}
+											onChange={(e) => setSpecies(e.target.value)}>
+											<MenuItem value='Cat'>Cat</MenuItem>
+											<MenuItem value='Dog'>Dog</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+								<Grid item xs={4}>
+									{/* <TextField type="file" value={ pictureThumbnailUrl } onChange = {(e) =>setPictureThumbnailUrl(e.target.value)}/> */}
+									<TextField
+										variant='filled'
+										label='Add a photo:'
+										fullWidth
+										value={pictureThumbnailUrl}
+										onChange={(e) => setPictureThumbnailUrl(e.target.value)}
+									/>
+								</Grid>
+							</Grid>
+							<Grid container justify='space-around' item xs={12} spacing={3}>
+								<Grid container justify='center' align='center' item xs={4}>
+									<FormControlLabel
+										control={
+											<Checkbox
+												color='primary'
+												checked={isBreedMixed}
+												onChange={(e) => setIsBreedMixed(e.target.checked)}
+											/>
+										}
+										label='Mixed Breed(Optional):'
+									/>
+								</Grid>
+								<Grid item xs={4}>
+									<FormControl variant='filled' className={classes.formControl}>
+										<InputLabel id='selectPrimaryBreedLabel'>
+											Primary Breed(Optional):
+										</InputLabel>
+										<Select
+											labelId='selectPrimaryBreedLabel'
+											// fullWidth
+											value={primaryBreed}
+											onChange={(e) => setPrimaryBreed(e.target.value)}>
+											<MenuItem value=''>
+												----------------------------------
+											</MenuItem>
+											{breedsList.map((br, i) => (
+												<MenuItem key={i} value={`${br.id}`}>
+													{br.name}
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+								</Grid>
+								<Grid item xs={4}>
+									<FormControl variant='filled' className={classes.formControl}>
+										<InputLabel id='selectSecondaryBreedLabel'>
+											Secondary Breed(Optional):
+										</InputLabel>
+										<Select
+											labelId='selectSecondaryBreedLabel'
+											// fullWidth
+											disabled={isBreedMixed ? false : true}
+											value={secondaryBreed}
+											onChange={(e) => setSecondaryBreed(e.target.value)}>
+											<MenuItem value=''>
+												----------------------------------
+											</MenuItem>
+											{breedsList.map((br, i) => (
+												<MenuItem key={i} value={`${br.id}`}>
+													{br.name}
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+								</Grid>
+							</Grid>
+							<Grid container justify='space-around' item xs={12} spacing={3}>
+								<Grid item xs={12}>
+									<TextField
+										//style={{ width: "500px", height: "200px" }}
+										variant='filled'
+										label='Description:'
+										fullWidth='true'
+										multiline
+										rowsMax={4}
+										value={description}
+										onChange={(e) => setDescription(e.target.value)}
+									/>
+								</Grid>
+							</Grid>
+							<Grid container justify='space-around' item xs={12} spacing={3}>
+								<Grid item xs={4}>
+									<FormControl variant='filled' className={classes.formControl}>
+										<InputLabel id='selectAgeGroupLabel'>
+											AgeGroup(Optional):
+										</InputLabel>
+										<Select
+											labelId='selectAgeGroupLabel'
+											// fullWidth
+											value={ageGroup}
+											onChange={(e) => setAgeGroup(e.target.value)}>
+											<MenuItem value='Baby'>Baby</MenuItem>
+											<MenuItem value='Young'>Young</MenuItem>
+											<MenuItem value='Adult'>Adult</MenuItem>
+											<MenuItem value='Mature'>Mature</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+								<Grid item xs={4}>
+									<TextField
+										variant='filled'
+										label='Estimated Age(Optional):'
+										fullWidth
+										value={ageString}
+										onChange={(e) => setAgeString(e.target.value)}
+									/>
+								</Grid>
+								<Grid container justify='center' align='center' item xs={4}>
+									<KeyboardDatePicker
+										margin='normal'
+										label='Birth Date(Optional)'
+										fullWidth
+										format='MM/dd/yyyy'
+										value={birthDate}
+										onChange={(e) => setBirthDate(e.target.value)}
+										KeyboardButtonProps={{
+											"aria-label": "change date",
+										}}
+									/>
+								</Grid>
+							</Grid>
+							<Grid container justify='space-around' item xs={12} spacing={3}>
+								<Grid item xs={4}>
+									<FormControl variant='filled' className={classes.formControl}>
+										<InputLabel id='selectGenderLabel'>Gender:</InputLabel>
+										<Select
+											labelId='selectGenderLabel'
+											// fullWidth
+											value={sex}
+											onChange={(e) => setSex(e.target.value)}>
+											<MenuItem value='Male'>Male</MenuItem>
+											<MenuItem value='Female'>Female</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+								<Grid item xs={4}>
+									<FormControl variant='filled' className={classes.formControl}>
+										<InputLabel id='selectCoatLengthLabel'>
+											Coat Length:
+										</InputLabel>
+										<Select
+											labelId='selectCoatLengthLabel'
+											// fullWidth
+											value={coatLength}
+											onChange={(e) => setCoatLength(e.target.value)}>
+											<MenuItem value='Short'>Short</MenuItem>
+											<MenuItem value='Medium'>Medium</MenuItem>
+											<MenuItem value='Long'>Long</MenuItem>
+										</Select>
+									</FormControl>
+									{/* <p>Description Text: </p>
                 <TextField type="text" value={ AgeGroup } onChange = {(e) =>setAgeGroup(e.target.value)}/> */}
-						</Grid>
-						<Grid item xs={4}>
-							<FormControl variant='filled' className={classes.formControl}>
-								<InputLabel id='selectSizeLabel'>Size:</InputLabel>
-								<Select
-									labelId='selectSizeLabel'
-									fullWidth
-									value={sizeGroup}
-									onChange={(e) => setSizeGroup(e.target.files[0])}>
-									<MenuItem value='small'>Small</MenuItem>
-									<MenuItem value='medium'>Medium</MenuItem>
-									<MenuItem value='large'>Large</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-					</Grid>
-					<Grid container justify='space-around' spacing='3'>
-						<Grid item xs={4}>
-							<TextField
-								variant='filled'
-								label='Your Name:'
-								fullWidth
-								value={ownerName}
-								onChange={(e) => setOwnerName(e.target.value)}
-							/>
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								variant='filled'
-								label='Email:'
-								fullWidth
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-							/>
-							{/* <TextField defaultValue="Error" error inputProps={{ 'aria-label':'Must include either email or phone number*' }} /> */}
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								variant='filled'
-								label='Phone Number(Optional):'
-								fullWidth
-								value={number}
-								onChange={(e) => setPhoneNumber(e.target.value)}
-							/>
-							{/* <TextField defaultValue="Error" error inputProps={{ 'aria-label':'Must include either email or phone number*' }} /> */}
-						</Grid>
-					</Grid>
-					<Grid container justify='space-around' spacing='3'>
-						<Grid item xs={4}>
-							<TextField
-								variant='filled'
-								label='City:'
-								fullWidth
-								value={city}
-								onChange={(e) => setCity(e.target.value)}
-							/>
-						</Grid>
-						<Grid item xs={4}>
-							<FormControl variant='filled' className={classes.formControl}>
-								<InputLabel id='selectStateLabel'>State:</InputLabel>
-								<Select
-									labelId='selectStateLabel'
-									fullWidth
-									value={state}
-									onChange={(e) => setState(e.target.value)}>
-									<MenuItem value='CA'>Ca</MenuItem>
-									<MenuItem value='WA'>WA</MenuItem>
-									<MenuItem value='CO'>CO</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								variant='filled'
-								label='Postal Code:'
-								fullWidth
-								value={postalCode}
-								onChange={(e) => setPostalCode(e.target.value)}
-							/>
-						</Grid>
-					</Grid>
-					<Grid container justify='space-around' spacing='3'>
-						<Grid item xs={2}>
-							<Link to='/'>
-								<Button variant='contained' color='primary'>
-									Cancel
+								</Grid>
+								<Grid item xs={4}>
+									<FormControl variant='filled' className={classes.formControl}>
+										<InputLabel id='selectSizeLabel'>Size:</InputLabel>
+										<Select
+											labelId='selectSizeLabel'
+											// fullWidth
+											value={sizeGroup}
+											onChange={(e) => setSizeGroup(e.target.files[0])}>
+											<MenuItem value='small'>Small</MenuItem>
+											<MenuItem value='medium'>Medium</MenuItem>
+											<MenuItem value='large'>Large</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+							</Grid>
+						</Paper>
+						<Paper className={classes.paperStacked}>
+							<Grid container justify='space-around' item xs={12} spacing={3}>
+								<Grid item xs={4}>
+									<TextField
+										variant='filled'
+										label='Your Name:'
+										fullWidth
+										value={ownerName}
+										onChange={(e) => setOwnerName(e.target.value)}
+									/>
+								</Grid>
+								<Grid item xs={4}>
+									<TextField
+										variant='filled'
+										label='Email:'
+										fullWidth
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
+									/>
+									{/* <TextField defaultValue="Error" error inputProps={{ 'aria-label':'Must include either email or phone number*' }} /> */}
+								</Grid>
+								<Grid item xs={4}>
+									<TextField
+										variant='filled'
+										label='Phone Number(Optional):'
+										fullWidth
+										value={number}
+										onChange={(e) => setPhoneNumber(e.target.value)}
+									/>
+									{/* <TextField defaultValue="Error" error inputProps={{ 'aria-label':'Must include either email or phone number*' }} /> */}
+								</Grid>
+							</Grid>
+							<Grid container justify='space-around' item xs={12} spacing={3}>
+								<Grid item xs={4}>
+									<TextField
+										variant='filled'
+										label='City:'
+										fullWidth
+										value={city}
+										onChange={(e) => setCity(e.target.value)}
+									/>
+								</Grid>
+								<Grid item xs={4}>
+									<FormControl variant='filled' className={classes.formControl}>
+										<InputLabel id='selectStateLabel'>State:</InputLabel>
+										<Select
+											labelId='selectStateLabel'
+											// fullWidth
+											value={state}
+											onChange={(e) => setState(e.target.value)}>
+											<MenuItem value='CA'>Ca</MenuItem>
+											<MenuItem value='WA'>WA</MenuItem>
+											<MenuItem value='CO'>CO</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+								<Grid item xs={4}>
+									<TextField
+										variant='filled'
+										label='Postal Code:'
+										fullWidth
+										value={postalCode}
+										onChange={(e) => setPostalCode(e.target.value)}
+									/>
+								</Grid>
+							</Grid>
+						</Paper>
+						<Grid container justify='space-around' item xs={12} spacing={3}>
+							<Grid container justify='center' align='center' item xs={2}>
+								<Link to='/'>
+									<Button
+										className={classes.buttons}
+										variant='contained'
+										// color='primary'
+									>
+										Cancel
+									</Button>
+								</Link>
+							</Grid>
+							<Grid container justify='center' align='center' item xs={2}>
+								<Button
+									className={classes.buttons}
+									variant='contained'
+									color='primary'
+									type='submit'>
+									Submit
 								</Button>
-							</Link>
+							</Grid>
 						</Grid>
-						<Grid item xs={2}>
-							<Button variant='contained' color='primary' type='submit'>
-								Submit
-							</Button>
-						</Grid>
-					</Grid>
-				</form>
-			</MuiPickersUtilsProvider>
-		</Container>
+					</form>
+				</MuiPickersUtilsProvider>
+			</Paper>
+		</Grid>
+		// </Container>
 		//* </div> */
 	);
 };
