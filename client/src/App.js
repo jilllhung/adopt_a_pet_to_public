@@ -30,8 +30,8 @@ function App() {
   
   const classes = useStyles();
   return (
-    <div className="App" style={{width : "970px", margin : "0px auto", backgroundColor : "#EDEDED"}}>
-      <header style={{width : "970px", height : "125px", backgroundColor : "#22327B", color : "white"}}>
+    <div className="App" style={{minHeight:"100vh",backgroundColor : "#EDEDED"}}>
+      <header style={{height : "125px", backgroundColor : "#22327B", color : "white"}}>
         <h1 style={{paddingTop : "35px", paddingLeft : "30px"}}>Website Name</h1>
       </header>
       <div style={{display: "flex", marginLeft : "160px", marginTop : "25px"}}>
@@ -56,7 +56,7 @@ function App() {
         <Button classes={{
         root: classes.root, // class name, e.g. `classes-nesting-root-x`
         label: classes.label // class name, e.g. `classes-nesting-label-x`
-        }} type="button"  style={{margin : "20px", height : "100px" ,width : "200px"}}>Do you know of a pet that needs a new home?
+        }} type="button"  style={{margin : "20px", height : "100px" ,width : "200px"}} onClick={(e) =>{navigate("/animal_form");}}>Do you know of a pet that needs a new home?
         </Button>
 
       </div>
