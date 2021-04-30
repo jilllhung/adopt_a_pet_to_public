@@ -25,8 +25,18 @@ public class ContactValidator implements ConstraintValidator<ContactValues, Obje
 		Object val2=new BeanWrapperImpl(value).getPropertyValue(field2);
 		Object val3=new BeanWrapperImpl(value).getPropertyValue(field3);
 		boolean x=false;
-		if(val1 instanceof String||val2 instanceof String||val3 instanceof String) {
-			if(!"".equals(val1)||!"".equals(val2)||!"".equals(val3))x=true;
+		if(val1 instanceof String) {
+			if(!"".equals(val1)){
+				x=true;
+			}
+		}
+		if(val2 instanceof String) {
+			if(!"".equals(val2))
+				x=true;
+		}
+		if(val3 instanceof String) {
+			if(!"".equals(val3))
+				x=true;
 		}
 		else if(val1 instanceof Organization||val2 instanceof Organization||val3 instanceof Organization)x=true;
 		return x;

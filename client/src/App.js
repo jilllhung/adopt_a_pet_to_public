@@ -61,9 +61,10 @@ function App() {
 
       </div>
       <Router>
-        <Home path="/"/> 
-        <ShowPet path="/animals/:id"/>
-        <PetList path="/animals" default spec = {spec}/>
+        <Home path="/" default/> 
+        <ShowPet path="/animals/show/:id"/>
+        <PetList path="/animals" spec = {spec}/>
+        <PetList path="/animals/:spec"/>
         <PetAdoptionForm path="/animal_form"/>
         {/* <Test path="/test"/>  */}
       </Router>
