@@ -97,9 +97,7 @@ const PetList = (props) => {
 			<div className={classes.showdiv}>
 				{pets
 					.filter(
-						(pet) =>
-							pet=>age===""||
-              (pet.ageGrp&&pet.ageGrp.name.toLowerCase()===age)
+						(pet)=>age===""||(pet.ageGrp&&pet.ageGrp.name.toLowerCase()===age)
 					)
 					.filter(
 						(pet) =>
