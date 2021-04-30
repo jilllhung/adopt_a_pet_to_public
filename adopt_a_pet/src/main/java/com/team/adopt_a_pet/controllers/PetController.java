@@ -4,26 +4,21 @@ package com.team.adopt_a_pet.controllers;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.naming.Binding;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +30,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
 import org.springframework.web.reactive.function.client.WebClient.RequestHeadersSpec;
 import org.springframework.web.reactive.function.client.WebClient.UriSpec;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -520,60 +514,96 @@ public Pet mkPet(Pet p) throws BadRequestException{
 				.defaultHeader(HttpHeaders.AUTHORIZATION, APIKey) 
 				.build();
 		UriSpec<RequestBodySpec> uriSpec = w.method(HttpMethod.GET);
-		RequestBodySpec bodySpec = uriSpec.uri("v5/public/animals/search/available?limit=15");
+//		 MAX_VALUE (2147483647) of System.out.println
+		RequestBodySpec bodySpec = uriSpec.uri("v5/public/animals/search/available?sort=animals.id&limit=1&include=breeds");
 		RequestHeadersSpec<?> headersSpec = bodySpec.bodyValue("{\"data\":{\"filterRadius\":{\"miles\": 20,\"postalcode\":98109}}}");
 		Mono<String> response=headersSpec.exchangeToMono(r -> {
 			  if (r.statusCode()
 					    .equals(HttpStatus.OK)) {
-				  		  System.out.println("ok!");
 					      return r.bodyToMono(String.class);
 					  } else if (r.statusCode()
 					    .is4xxClientError()) {
 						  System.out.println(r.statusCode());
 					      return Mono.just("Error response");
 					  } else {
-						  System.out.println("esle");
 						  return r.createException()
 					        .flatMap(Mono::error);
 					  }
 		});
 		String body=response.block();
-		System.out.println(body);
-//		ObjectMapper Layer1=new ObjectMapper();
-//		JsonNode root;
-//		try {
-//			root=Layer1.readTree(body);
-//			System.out.println(root);
-//			JsonNode name=root.path("meta").path("count");
-////			System.out.println(name);
-//			bodySpec = uriSpec.uri("v5/public/orgs/search/?sort=orgs.distance&limit="+name);
-//			headersSpec = bodySpec.bodyValue("{\"data\":{\"filters\":[],\"filterProcessing\":\"1\",\"filterRadius\":{\"miles\":15,\"postalcode\":\"98109\"}}}");
-//			response=headersSpec.exchangeToMono(r -> {
-//				  if (r.statusCode()
-//						    .equals(HttpStatus.OK)) {
-//						      return r.bodyToMono(String.class);
-//						  } else if (r.statusCode()
-//						    .is4xxClientError()) {
-//							  System.out.println(r.statusCode());
-//						      return Mono.just("Error response");
-//						  } else {
-//						      return r.createException()
-//						        .flatMap(Mono::error);
-//						  }
-//			});
-//			body=response.block();
-//			System.out.println(body);
-//			root=Layer1.readTree(body);
-//			name=root.path("data");
-//			for(JsonNode s:name) {
-//				Organization newOrg = Layer1.convertValue(s.get("attributes"), Organization.class);
-//				System.out.println(newOrg);
-//				mkOrg(newOrg);
-//			}
-//		} catch (JsonProcessingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+//		System.out.println(body);
+		ObjectMapper Layer1=new ObjectMapper();
+		JsonNode root;
+		try {
+			root=Layer1.readTree(body);
+			JsonNode name=root.path("meta").path("count");
+			System.out.println(name);
+			int limit = 25;
+			int total = name.asInt();
+			int totalPages = (int) Math.ceil(total/(float) limit);
+			System.out.println(totalPages);
+			for (int i=1; i<=totalPages; i++) {
+				bodySpec = uriSpec.uri("v5/public/animals/search/available?sort=animals.id&include=orgs,species&limit="+ limit +"&page=" + i);
+				headersSpec = bodySpec.bodyValue(
+						"{\"data\":{\"filterRadius\":{\"miles\": 20,\"postalcode\":98109}}}");
+				response = headersSpec.exchangeToMono(r -> {
+					if (r.statusCode().equals(HttpStatus.OK)) {
+						return r.bodyToMono(String.class);
+					} else if (r.statusCode().is4xxClientError()) {
+						System.out.println(r.statusCode());
+						return Mono.just("Error response");
+					} else {
+						return r.createException().flatMap(Mono::error);
+					}
+				});
+				body = response.block();
+//				System.out.println(body);
+				root = Layer1.readTree(body);
+				name = root.path("data");
+				JsonNode includedMess = root.path("included");
+				//Map out org, species w/ their ids
+				HashMap<String, Organization> orgMap = new HashMap<>();
+				HashMap<String, Species> speciesMap = new HashMap<>();
+				for(JsonNode include: includedMess) {
+					String key = include.path("id").asText();
+					JsonNode att = include.path("attributes");
+					if(include.path("type").asText().equals("orgs")) {
+						Organization foundOrg = orgServ.getOrganization(att.path("name").asText(), att.path("postalcode").asText());
+						System.out.println(foundOrg);
+						orgMap.put(key, foundOrg);
+					}else { //"species"
+						Species foundSp = speciesServ.getSpecificSpecies(att.path("singular").asText().toLowerCase());
+						speciesMap.put(key, foundSp);
+					}
+				}
+				for (JsonNode s : name) {
+//					System.out.println(s);
+					Pet newPet = Layer1.convertValue(s.get("attributes"), Pet.class);
+					//Set Relationships
+					//AgeGroup
+					String age = s.path("attributes").path("ageGroup").asText();
+					AgeGroup thisAge = ageGroupServ.getAgeGroupByName(age);
+//					System.out.println(thisAge);
+					newPet.setAgeGroup(thisAge);
+//					System.out.println(s.path("relationships").path("orgs").path("data").path(0));
+					String orgAPIid = s.path("relationships").path("orgs").path("data").path(0).path("id").asText();
+					String speciesAPIid = s.path("relationships").path("species").path("data").path(0).path("id").asText();
+//					System.out.println(orgAPIid);
+//					System.out.println(orgMap.get(orgAPIid));
+					newPet.setOrganization(orgMap.get(orgAPIid));
+					newPet.setSpecies(speciesMap.get(speciesAPIid));
+					newPet.setBreedPrimary(breedServ.getBreedByNameAndSpecies(s.path("attributes").path("breedPrimary").asText(), speciesMap.get(speciesAPIid)));
+					if (s.path("attributes").path("breedSecondary") != null) {
+						newPet.setBreedSecondary(breedServ.getBreedByNameAndSpecies(s.path("attributes").path("breedSecondary").asText(), speciesMap.get(speciesAPIid)));
+					}
+//					System.out.println(newPet);
+//					mkOrg(newOrg);
+				}
+			}
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 //	private class ErrorData extends Throwable{
 //		private List<ObjectError> data=new ArrayList<>();
