@@ -98,7 +98,7 @@ export default (props)=>{
                         <RoomIcon />
                     </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={`Location: ${pet.city},${pet.state}`}/>
+                    <ListItemText primary={`Location: ${pet.city?pet.city:"City Unknown"},${pet.state?pet.state:"State Unknown"}`}/>
                 </ListItem>
                 <ListItem button className={classes.listHead}>
                     <ListItemAvatar>
@@ -114,7 +114,22 @@ export default (props)=>{
                         <ContactPhoneIcon />
                     </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={`Contact: ${pet.city},${pet.state}`}/>
+                    <List>
+                        {(pet.email || pet.number)?
+                            (<>
+                                <ListItem><ListItemText primary={`Contact Person Name: ${pet.ownerName? pet.ownerName:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`Email: ${pet.email? pet.email:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`Contact Phone Number: ${pet.number? pet.number:"Unknown"}`}/></ListItem>
+                            </>)
+                            : (pet.organization)?(<>
+                                <ListItem><ListItemText primary={`Organization Name: ${pet.organization? pet.organization.name:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`Email: ${pet.organization.email? pet.organization.email:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`Phone Number: ${pet.organization.phone? pet.organization.phone:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`URL: ${pet.organization.url? pet.organization.url:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`Location: ${pet.organization.city? pet.organization.city:"City Unknown"}, ${pet.organization.state? pet.organization.state:"State Unknown"}`}/></ListItem>
+                            </>):("")
+                        }
+                    </List>
                 </ListItem>
             </List>
             {/* <h1>{pet.name}</h1>
