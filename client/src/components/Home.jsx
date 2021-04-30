@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles';
 
 export default() => {
     var items = [
@@ -28,16 +29,34 @@ export default() => {
         }
     ]
 
+    const useStyles = makeStyles({
+        start:{
+            display:"flex",
+            justifyContent:"center",
+        },
+        paper:{
+            backgroundColor : "#EDEDED",
+            margin:"0px",
+            padding:"0px",
+        },
+        img:{
+            width : "75vw",
+            minWidth:"690px",
+        }
+    });
+    
+    const classes = useStyles();
+
     return(
-        <div style={{marginLeft : "20px"}}>
+        <div className={classes.start}>
             <Carousel >
             {
                 items.map((item, i) => 
-                    <Paper style={{marginLeft : "150px", backgroundColor : "#EDEDED"}}>
-                        <img style={{display : "inline-block", width : "600px"}} src={item.name}/>
+                    <Paper className={classes.paper}>
+                        <img className={classes.img} src={item.name}/>
                         {/* <p>{item.description}</p> */}
-                        <Button className="CheckButton">
-                        </Button>
+                        {/* <Button className="CheckButton">
+                        </Button> */}
                     </Paper>
                 )
             }

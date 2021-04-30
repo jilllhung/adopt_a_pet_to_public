@@ -18,45 +18,62 @@ function App() {
       borderRadius: 3,
       border: 0,
       color: 'white',
-      height: 48,
       padding: '0 30px',
       boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+      height : "100px",
+      flexGrow:"1",
+      // width : "250px"
     },
     label: {
       textTransform: 'capitalize',
+      fontSize:"1.3rem",
     },
+    buttonBar:{
+      display: "flex",
+      margin: "auto",
+      justifyContent:"center",
+      padding: "20px",
+      gap:"20px",
+      width : "75vw",
+      minWidth:"690px",
+      // border:"red dotted 1px",
+    },
+    app:{
+      minHeight:"100vh",
+      backgroundColor : "#EDEDED",
+      minWidth:"970px",
+    }
   });
-
   
   const classes = useStyles();
   return (
-    <div className="App" style={{minHeight:"100vh",backgroundColor : "#EDEDED"}}>
+    <div className={classes.app}>
       <header style={{height : "125px", backgroundColor : "#22327B", color : "white"}}>
-        <h1 style={{paddingTop : "35px", paddingLeft : "30px"}}>Website Name</h1>
+        <h1 style={{paddingTop : "35px", paddingLeft : "30px"}} onClick={()=>{navigate("/");}}>Website Name</h1>
       </header>
-      <div style={{display: "flex", marginLeft : "160px", marginTop : "25px"}}>
-        <Button classes={{
+      <div className={classes.buttonBar}>
+        <Button startIcon={<PetsIcon />} classes={{
         root: classes.root, // class name, e.g. `classes-nesting-root-x`
         label: classes.label // class name, e.g. `classes-nesting-label-x`
-        }} type="button" style={{margin : "20px", height : "100px", width : "150px"}} onClick={(e) => {navigate("/animals/dog")}}>Find a Dog
+        }} type="button" onClick={(e) => {navigate("/animals/dog")}}>Find a Dog
         </Button>
 
-        <Button classes={{
+        <Button startIcon={<PetsIcon />} classes={{
         root: classes.root, // class name, e.g. `classes-nesting-root-x`
         label: classes.label // class name, e.g. `classes-nesting-label-x`
-        }}  style={{margin : "20px", height : "100px", width : "150px"}} onClick={(e) =>{navigate("/animals/cat");}}>Find a Cat
+        }} onClick={(e) =>{navigate("/animals/cat");}}>Find a Cat
         </Button>
 
-        <Button classes={{
+        <Button startIcon={<PetsIcon />} classes={{
         root: classes.root, // class name, e.g. `classes-nesting-root-x`
         label: classes.label // class name, e.g. `classes-nesting-label-x`
-        }}  style={{margin : "20px", height : "100px", width : "150px"}} onClick={(e) =>{navigate("/animals/all");}}>Find All
+        }} onClick={(e) =>{navigate("/animals/all");}}>Find All
         </Button>
 
-        <Button classes={{
+        <Button startIcon={<PetsIcon />} classes={{
         root: classes.root, // class name, e.g. `classes-nesting-root-x`
         label: classes.label // class name, e.g. `classes-nesting-label-x`
-        }} type="button"  style={{margin : "20px", height : "100px" ,width : "200px"}} onClick={(e) =>{navigate("/animal_form");}}>Do you know of a pet that needs a new home?
+        }} type="button" onClick={(e) =>{navigate("/animal_form");}}>Know of a pet in need?
         </Button>
 
       </div>
