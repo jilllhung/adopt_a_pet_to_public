@@ -57,7 +57,7 @@ const Pet = (props) => {
 				<Typography variant='h5' component='h2'>
 					{pet.name}
 				</Typography>
-				{pet.ageGroup && (
+				{pet.ageGrp && (
 					<>
 						<Typography
 							className={classes.pos}
