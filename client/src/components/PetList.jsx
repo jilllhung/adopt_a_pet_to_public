@@ -69,6 +69,7 @@ export default (props)=>{
                     <label htmlFor="ageGroup">Age Group</label>
                     <select onChange={AgeSelect} value={age}>
                         <option value="">--------</option>
+                        <option value="baby">Baby</option>
                         <option value="young">Young</option>
                         <option value="adult">Adult</option>
                         <option value="senior">Senior</option>
@@ -89,7 +90,7 @@ export default (props)=>{
             <div className={classes.showdiv}>
             {
             pets
-            .filter(pet=>age===""||pet.ageGroup.name.toLowerCase()===age)
+            .filter(pet=>age===""||(pet.ageGrp&&pet.ageGrp.name.toLowerCase()===age))
             .filter(pet=> breed===""||(pet.breedPrimary&&pet.breedPrimary.name===breed)||(pet.breedSecondary&&pet.breedSecondary.name===breed))
             .map((pet,i)=>
                 <Pet key={i} pet={pet}/>

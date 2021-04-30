@@ -54,13 +54,13 @@ export default (props)=>{
                 Age group
                 </Typography>
                 <Typography variant="body2" component="p">
-                {props.pet.ageGroup.name}
+                {props.pet.ageGrp?props.pet.ageGrp.name:"Unknown"}
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
                 Location
                 </Typography>
                 <Typography variant="body2" component="p">
-                {props.pet.city}, {props.pet.state}
+                {`${props.pet.city}, ${props.pet.state}`}
                 </Typography>
             </CardContent>
             <CardActions>
