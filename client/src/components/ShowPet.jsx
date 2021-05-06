@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import sanitizeHtml from 'sanitize-html';
+import SanitizedHTML from 'react-sanitized-html';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -27,6 +28,7 @@ const useStyles = makeStyles({
         width: "50vw",
     },
     individualPic: {
+        marginTop:"15px",
         width: "15vw",
     },
     listHead: {
@@ -98,7 +100,7 @@ export default (props)=>{
                         <RoomIcon />
                     </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={`Location: ${pet.city},${pet.state}`}/>
+                    <ListItemText primary={`Location: ${pet.city?pet.city:"City Unknown"},${pet.state?pet.state:"State Unknown"}`}/>
                 </ListItem>
                 <ListItem button className={classes.listHead}>
                     <ListItemAvatar>
@@ -106,7 +108,15 @@ export default (props)=>{
                         <DescriptionIcon />
                     </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={`Description: ${sanitizeHtml(pet.description)}`}/>
+                    <ListItemText>
+                        {/* {`Description: ${sanitizeHtml(pet.description)}`} */}
+                        {/* {sanitizeHtml(`<a href="http://bing.com/">Bing</a>`)} */}
+                        <SanitizedHTML
+                            allowedAttributes={{ 'a': ['href'] }}
+                            allowedTags={['a', 'br']}
+                            html={pet.description}
+                        />
+                    </ListItemText>
                 </ListItem>
                 <ListItem button>
                     <ListItemAvatar>
@@ -114,7 +124,22 @@ export default (props)=>{
                         <ContactPhoneIcon />
                     </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={`Contact: ${pet.city},${pet.state}`}/>
+                    <List>
+                        {(pet.email || pet.number)?
+                            (<>
+                                <ListItem><ListItemText primary={`Contact Person Name: ${pet.ownerName? pet.ownerName:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`Email: ${pet.email? pet.email:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`Contact Phone Number: ${pet.number? pet.number:"Unknown"}`}/></ListItem>
+                            </>)
+                            : (pet.organization)?(<>
+                                <ListItem><ListItemText primary={`Organization Name: ${pet.organization? pet.organization.name:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`Email: ${pet.organization.email? pet.organization.email:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`Phone Number: ${pet.organization.phone? pet.organization.phone:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`URL: ${pet.organization.url? pet.organization.url:"Unknown"}`}/></ListItem>
+                                <ListItem><ListItemText primary={`Location: ${pet.organization.city? pet.organization.city:"City Unknown"}, ${pet.organization.state? pet.organization.state:"State Unknown"}`}/></ListItem>
+                            </>):("")
+                        }
+                    </List>
                 </ListItem>
             </List>
             {/* <h1>{pet.name}</h1>
