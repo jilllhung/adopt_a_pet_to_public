@@ -14,6 +14,10 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -30,6 +34,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
 import org.springframework.web.reactive.function.client.WebClient.RequestHeadersSpec;
 import org.springframework.web.reactive.function.client.WebClient.UriSpec;
+
+import jdk.internal.PreviewFeature;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -63,6 +69,9 @@ public class PetController {
 	public AgeGroupService ageGroupServ;
 	@Autowired
 	private Validator validator;
+
+	@Value("${RescueGroupsAPIkey}")
+	private String RescueGroupsAPIkey;
 	
 	@RequestMapping("/getpets")
 	public List<Test> test() {
@@ -255,7 +264,7 @@ public Pet mkPet(Pet p) throws BadRequestException{
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			con.setRequestProperty("Content-Type", "application/json");
-			con.setRequestProperty("Authorization", APIKey);
+			con.setRequestProperty("Authorization", RescueGroupsAPIkey);
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);
 			con.setInstanceFollowRedirects(false);
@@ -282,7 +291,7 @@ public Pet mkPet(Pet p) throws BadRequestException{
 			con=(HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			con.setRequestProperty("Content-Type", "application/json");
-			con.setRequestProperty("Authorization", APIKey);
+			con.setRequestProperty("Authorization", RescueGroupsAPIkey);
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);
 			con.setInstanceFollowRedirects(false);
@@ -309,7 +318,7 @@ public Pet mkPet(Pet p) throws BadRequestException{
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			con.setRequestProperty("Content-Type", "application/json");
-			con.setRequestProperty("Authorization", APIKey);
+			con.setRequestProperty("Authorization", RescueGroupsAPIkey);
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);
 			con.setInstanceFollowRedirects(false);
@@ -336,7 +345,7 @@ public Pet mkPet(Pet p) throws BadRequestException{
 			con=(HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			con.setRequestProperty("Content-Type", "application/json");
-			con.setRequestProperty("Authorization", APIKey);
+			con.setRequestProperty("Authorization", RescueGroupsAPIkey);
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);
 			con.setInstanceFollowRedirects(false);
@@ -376,7 +385,7 @@ public Pet mkPet(Pet p) throws BadRequestException{
 	public void JacksonTesting(Long sp_id, String species) {
 		WebClient w=WebClient.builder()
 				.baseUrl("https://api.rescuegroups.org")
-				.defaultHeader(HttpHeaders.AUTHORIZATION, APIKey) 
+				.defaultHeader(HttpHeaders.AUTHORIZATION, RescueGroupsAPIkey) 
 				.build();
 		UriSpec<RequestBodySpec> uriSpec = w.method(HttpMethod.GET);
 		RequestBodySpec bodySpec = uriSpec.uri("/v5/public/animals/breeds/search/"+species);
@@ -445,7 +454,7 @@ public Pet mkPet(Pet p) throws BadRequestException{
 	public void JacksonOrganization() {
 		WebClient w=WebClient.builder()
 				.baseUrl("https://api.rescuegroups.org")
-				.defaultHeader(HttpHeaders.AUTHORIZATION, APIKey) 
+				.defaultHeader(HttpHeaders.AUTHORIZATION, RescueGroupsAPIkey) 
 				.build();
 		UriSpec<RequestBodySpec> uriSpec = w.method(HttpMethod.GET);
 		RequestBodySpec bodySpec = uriSpec.uri("v5/public/orgs/search/?sort=orgs.distance");
@@ -511,7 +520,7 @@ public Pet mkPet(Pet p) throws BadRequestException{
 	public void JacksonPet() {
 		WebClient w=WebClient.builder()
 				.baseUrl("https://api.rescuegroups.org")
-				.defaultHeader(HttpHeaders.AUTHORIZATION, APIKey) 
+				.defaultHeader(HttpHeaders.AUTHORIZATION, RescueGroupsAPIkey) 
 				.build();
 		UriSpec<RequestBodySpec> uriSpec = w.method(HttpMethod.GET);
 //		 MAX_VALUE (2147483647) of System.out.println
