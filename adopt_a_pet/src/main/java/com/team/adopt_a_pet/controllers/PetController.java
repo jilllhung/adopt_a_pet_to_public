@@ -150,7 +150,6 @@ public class PetController {
 	//Get All Pets of a Specific Species
 	@GetMapping("/pets/{spec}")
 	public List<Pet> getAllPetsOfSpecies(@PathVariable String spec){
-		System.out.println(RescueGroupsAPIkey);
 		List<Pet> s=new ArrayList<>();
 		if(spec.equals("all")) {
 			s=petServ.getAllPets();
