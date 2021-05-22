@@ -14,6 +14,10 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -66,7 +70,8 @@ public class PetController {
 	@Autowired
 	private Validator validator;
 
-	private String RescueGroupsAPIkey=APIKey;
+	@Value("${RescueGroupsAPIkey}")
+	private String RescueGroupsAPIkey;
 	
 	@RequestMapping("/getpets")
 	public List<Test> test() {
@@ -145,6 +150,7 @@ public class PetController {
 	//Get All Pets of a Specific Species
 	@GetMapping("/pets/{spec}")
 	public List<Pet> getAllPetsOfSpecies(@PathVariable String spec){
+		System.out.println(RescueGroupsAPIkey);
 		List<Pet> s=new ArrayList<>();
 		if(spec.equals("all")) {
 			s=petServ.getAllPets();
